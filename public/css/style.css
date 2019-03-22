@@ -2271,7 +2271,7 @@ figure.effect-zoe p.description {
 	opacity: 0;
 	-webkit-transition: opacity 0.35s;
 	transition: opacity 0.35s;
-	-webkit-backface-visibility: hidden; /* Fix for Chrome 37.0.2062.120 (Mac) */
+	-webkit-backface-visibility: hidden; 
 }
 
 figure.effect-zoe h2,
@@ -2338,16 +2338,6 @@ figure.effect-zoe:hover p.icon-links a:first-child {
 	transition-delay: 1.0s;
 }
 
-/* .grid {
-	position: relative;
-	margin: 0 auto;
-	padding: 1em 0 4em;
-	max-width: 2000px;
-	list-style: none;
-	text-align: center;
-} */
-
-/* Common style */
 .grid figure {
 	position: relative;
 	float: left;
