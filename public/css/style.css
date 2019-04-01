@@ -1865,7 +1865,7 @@ blockquote p {
 
 }
 
-.artwork {
+.funwork {
   color: #ffffff;
   font-family: 'Poppins', sans-serif;
   font-family: 'Lato', sans-serif;
@@ -1876,7 +1876,7 @@ blockquote p {
   padding-bottom: 15px;
 }
 
-.artwork::after {
+.funwork::after {
   content: "";
   position: absolute;
   left: 10px;
@@ -2198,13 +2198,13 @@ blockquote p {
 }
 
 @media only screen and (max-width: 1016px) {
-  .artwork::after {
+  .funwork::after {
     display: none;
   }
 }
 
 @media only screen and (max-width: 1016px) {
-  .artwork {
+  .funwork {
     margin-bottom: 0px;
     padding-bottom: 0px;
   }
@@ -2402,4 +2402,8 @@ figure.effect-zoe:hover p.icon-links a:first-child {
 .grid figure p {
 	letter-spacing: 1px;
 	font-size: 68.5%;
+}
+
+#logo_img{
+  max-width: 300px;
 }

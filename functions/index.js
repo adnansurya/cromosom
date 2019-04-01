@@ -15,12 +15,12 @@ app.get('/', function(req,res) {
 
 app.get('/work', function(req,res) {
     //render file ejs dari direktori functions/views
-    res.render("work");
+    res.render("work", {page:'work'});
 });
 
 app.get('/about', function(req,res) {
     //render file ejs dari direktori functions/views
-    res.render("about");
+    res.render("about", {page:'about'});
 });
 
 app.get('/workdetail', function(req,res) {
@@ -30,12 +30,12 @@ app.get('/workdetail', function(req,res) {
 
 app.get('/funwork', function(req,res) {
     //render file ejs dari direktori functions/views
-    res.render("funwork");
+    res.render("funwork", {page:'funwork'});
 });
 
 app.get('/contact', function(req,res) {
     //render file ejs dari direktori functions/views
-    res.render("contact");
+    res.render("contact", {page:'contact'});
 });
 
 
