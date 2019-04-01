@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+      
+        <title>Cromosom - Login Admin</title>
+      
+      
+        <!-- Custom styles for this template-->
+        <link href="css/sb-admin.css" rel="stylesheet">
+
+    <!-- Firebase App is always required and must be first -->
+<script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-app.js"></script>
+
+<!-- Add additional services that you want to use -->
+<script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-auth.js"></script>
+
+<script>
+        // Initialize Firebase
+        var config = {
+          apiKey: "AIzaSyAyBrDcmmlRv34NNHmWh-Bw6XTtVagVMG0",
+          authDomain: "cromosom1.firebaseapp.com",
+          databaseURL: "https://cromosom1.firebaseio.com",
+          projectId: "cromosom1",
+          storageBucket: "cromosom1.appspot.com",
+          messagingSenderId: "179322650357"
+        };
+        firebase.initializeApp(config);
+      </script>
+
+
+<script src="https://www.gstatic.com/firebasejs/ui/3.4.1/firebase-ui-auth__id.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
+
+
+</head>
+
+<body class="bg-dark">
+
+  <div class="container">
+    <div class="card card-login mx-auto mt-5">
+      <div class="card-header">Login</div>
+      <div class="card-body">
+        <div id="firebaseui-auth-container"></div>
+        <div id="loader">Loading...</div>
+            
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+
+    firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+            
+            location.href = '/admin_index';
+            } else {
+            // // No user is signed in.
+            console.log("Tidak ada user yang login");
+            
+            }
+        });
+    
+    var ui = new firebaseui.auth.AuthUI(firebase.auth());
+
+    var uiConfig = {
+      callbacks: {
+        signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+
+          firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+              
+              location.href = '/admin';
+           }else{
+              console.log("Login Gagal");
+              alert('Login Gagal');
+           }
+          });
+          return false;
+        },
+
+        uiShown: function() {
+          // The widget is rendered.
+          // Hide the loader.
+          document.getElementById('loader').style.display = 'none';
+        }
+      },
+    
+      signInOptions: [
+        // Leave the lines as is for the providers you want to offer your users.
+      // firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        firebase.auth.EmailAuthProvider.PROVIDER_ID
+        //firebase.auth.PhoneAuthProvider.PROVIDER_ID
+      ],
+      // Terms of service url.
+      tosUrl: '<your-tos-url>',
+      // Privacy policy url.
+      privacyPolicyUrl: '<your-privacy-policy-url>'
+    };
+
+    ui.start('#firebaseui-auth-container', uiConfig);
+
+
+
+
+  </script>
+
+</body>
+
+</html>

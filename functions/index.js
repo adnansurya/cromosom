@@ -38,5 +38,15 @@ app.get('/contact', function(req,res) {
     res.render("contact", {page:'contact'});
 });
 
+app.get('/login', function(req,res) {
+    //render file ejs dari direktori functions/views
+    res.render("login");
+});
+
+app.get('/admin_index', function(req,res) {
+    //render file ejs dari direktori functions/views
+    res.render("admin_index");
+});
+
 
 exports.apps = functions.https.onRequest(app);
