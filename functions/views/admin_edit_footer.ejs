@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <%- include('templates/admin_head'); -%>
+       
+
+</head>
+
+<body id="page-top">
+
+        <%- include('templates/admin_navbar'); -%>
+
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <%- include('templates/admin_sidebar'); -%>
+
+    <div id="content-wrapper">
+
+      <div class="container-fluid">
+
+
+        <!-- Page Content -->
+        <h1>Footer</h1>
+        <hr>
+      
+        <h3>About</h3>
+        <div class="form-group">
+            <div class="form-label-group">                            
+                <textarea class="form-control" style="width:100%" id="aboutTxt" rows="4" placeholder="Masukkan teks About"></textarea>
+            </div>
+        </div>
+        <h3>Contact</h3>
+        <div class="form-group">
+            <div class="form-label-group">                            
+                <textarea class="form-control" style="width:100%" id="contactTxt" rows="4" placeholder="Masukkan teks Contact"></textarea>
+            </div>
+        </div>
+        
+        <a class="btn btn-primary btn-block" id="simpanBtn">Simpan</a>
+            
+
+      </div>
+      <!-- /.container-fluid -->
+
+      <!-- Sticky Footer -->
+      <%- include('templates/admin_footer'); -%>
+
+    </div>
+    <!-- /.content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  
+  <%- include('admin_script'); -%>
+
+</body>
+
+</html>

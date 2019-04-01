@@ -48,5 +48,10 @@ app.get('/admin_index', function(req,res) {
     res.render("admin_index");
 });
 
+app.get('/admin_edit_footer', function(req,res) {
+    //render file ejs dari direktori functions/views
+    res.render("admin_edit_footer");
+});
+
 
 exports.apps = functions.https.onRequest(app);
