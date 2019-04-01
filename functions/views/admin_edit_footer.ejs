@@ -56,6 +56,33 @@
 
   
   <%- include('admin_script'); -%>
+    <script type="text/javascript">
+        const  db = firebase.database();
+            db.ref('/footer').once('value', function(snapshot) { // load realtime
+            let footer = snapshot.val();
+            $("#aboutTxt").text(footer.about);
+            $("#contactTxt").text(footer.contact);
+        });
+
+        $('#simpanBtn').click(function() {
+            let about = $('#aboutTxt').val();
+            let contact = $('#contactTxt').val();
+            db.ref('/footer').set({
+                
+                "about" : about,
+                "contact" : contact
+
+            }, function(error) {
+            if (error) {
+                // The write failed...
+                alert("Peringatan! Data Gagal Disimpan!")
+            } else {
+                // Data saved successfully!
+                alert("Data Berhasil Disimpan!")
+            }
+            });
+        });
+    </script>   
 
 </body>
 

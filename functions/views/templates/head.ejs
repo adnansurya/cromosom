@@ -19,3 +19,20 @@
 
 <!-- CSS Style -->
 <link rel="stylesheet" href="css/style.css">
+
+ <!-- Firebase App is always required and must be first -->
+ <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-app.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-database.js"></script>
+
+ <script>
+        // Initialize Firebase
+        var config = {
+          apiKey: "AIzaSyAyBrDcmmlRv34NNHmWh-Bw6XTtVagVMG0",
+          authDomain: "cromosom1.firebaseapp.com",
+          databaseURL: "https://cromosom1.firebaseio.com",
+          projectId: "cromosom1",
+          storageBucket: "cromosom1.appspot.com",
+          messagingSenderId: "179322650357"
+        };
+        firebase.initializeApp(config);
+      </script>
