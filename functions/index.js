@@ -10,7 +10,7 @@ app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req,res) {
     //render file ejs dari direktori functions/views
-    res.render("index");
+    res.render("index", {page : 'index'});
 });
 
 app.get('/work', function(req,res) {
@@ -25,7 +25,7 @@ app.get('/about', function(req,res) {
 
 app.get('/workdetail', function(req,res) {
     //render file ejs dari direktori functions/views
-    res.render("workdetail");
+    res.render("workdetail", {page : 'workdetail'});
 });
 
 app.get('/funwork', function(req,res) {
