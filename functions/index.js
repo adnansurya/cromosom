@@ -55,3 +55,12 @@ app.get('/admin_edit_footer', function(req,res) {
 
 
 exports.apps = functions.https.onRequest(app);
+
+exports.newProfile = functions.auth.user().onCreate((user) => {
+
+    return admin.database().ref("/users/" + user.uid).set({
+      email : user.email,
+      role : 'anonymous'
+    });
+  
+  });
