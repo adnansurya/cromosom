@@ -43,7 +43,7 @@ app.get('/login', function(req,res) {
     res.render("login");
 });
 
-app.get('/admin_index', function(req,res) {
+app.get('/admin', function(req,res) {
     //render file ejs dari direktori functions/views
     res.render("admin_index");
 });
