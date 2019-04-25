@@ -18,7 +18,7 @@
         <div class="container-fluid bg-light my-4">
             <div class="row bgbg pt-3 row">    
                 <div class="col-md-6 pt-3 pb-3 pl-4">
-                    <p id="aboutTxt"></p>
+                    <p id="aboutTxt"><%= about %></p>
                 </div>
                 <div class="col-md-6 mb-5">
                     <h5 class="black-lines pb-4">Our Team</h5>
@@ -53,16 +53,7 @@
         <!-- Footer Section -->
         <%- include('templates/footer'); -%>
         <!-- Footer End -->
-        <script type="text/javascript">
-            
-                db.ref('/about').once('value', function(snapshot) { // load realtime
-                let about = snapshot.val();
-                
-                
-                $("#aboutTxt").text(about);
-                
-            });
-        </script>
+       
 
 
     </body>

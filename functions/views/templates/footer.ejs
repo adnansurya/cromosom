@@ -3,11 +3,11 @@
         <div class="row mb-5">
             <div class="col-lg-4">
                 <h3 class="reds">About</h3>
-                <p id="aboutFooterTxt"></p>
+                <p id="aboutFooterTxt"><%= footer.about %></p>
             </div>
             <div class="col-lg-4">
                 <h3 class="reds">Contact</h3>    
-                <p id="contactFooterTxt"></p>
+                <p id="contactFooterTxt"><%= footer.contact%></p>
             </div>        
             <div class="col-lg-4 ">  
                 <div class="mt-5">
@@ -29,13 +29,3 @@
         </div>
     </div>
 </footer>
-<script type="text/javascript">
-   
-        db.ref('/footer').once('value', function(snapshot) { // load realtime
-        let footer = snapshot.val();
-        console.log(footer);
-        
-        $("#aboutFooterTxt").text(footer.about);
-        $("#contactFooterTxt").text(footer.contact);
-    });
-</script>
