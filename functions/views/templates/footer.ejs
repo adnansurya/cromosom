@@ -3,11 +3,11 @@
         <div class="row mb-5">
             <div class="col-lg-4">
                 <h3 class="reds">About</h3>
-                <p id="aboutTxt">We’re branding agency based in Makassar, Indonesia. We embrace our client to thrive in the challenging competition, and most importantly, is to be DIFFERENT.</p>
+                <p id="aboutFooterTxt"></p>
             </div>
             <div class="col-lg-4">
                 <h3 class="reds">Contact</h3>    
-                <p id="contactTxt">Makassar, Indonesia<br>cromosom.studio@gmail.com<br><br>Hj. Anne Resa C/6, Bringkanaya 90242<br> Makassar, Indonesia</p>
+                <p id="contactFooterTxt"></p>
             </div>        
             <div class="col-lg-4 ">  
                 <div class="mt-5">
@@ -30,10 +30,12 @@
     </div>
 </footer>
 <script type="text/javascript">
-    const  db = firebase.database();
+   
         db.ref('/footer').once('value', function(snapshot) { // load realtime
         let footer = snapshot.val();
-        $("#aboutTxt").text(footer.about);
-        $("#contactTxt").text(footer.contact);
+        console.log(footer);
+        
+        $("#aboutFooterTxt").text(footer.about);
+        $("#contactFooterTxt").text(footer.contact);
     });
 </script>

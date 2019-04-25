@@ -23,19 +23,13 @@
 
 
         <!-- Page Content -->
-        <h1>Footer</h1>
+        <h1>About</h1>
         <hr>
       
-        <h3>About</h3>
+       
         <div class="form-group">
             <div class="form-label-group">                            
-                <textarea class="form-control" style="width:100%" id="aboutTxt" rows="5" placeholder="Masukkan teks About"></textarea>
-            </div>
-        </div>
-        <h3>Contact</h3>
-        <div class="form-group">
-            <div class="form-label-group">                            
-                <textarea class="form-control" style="width:100%" id="contactTxt" rows="5" placeholder="Masukkan teks Contact"></textarea>
+                <textarea class="form-control" style="width:100%" id="aboutTxt" rows="8" placeholder="Masukkan teks About"></textarea>
             </div>
         </div>
         
@@ -57,22 +51,20 @@
   
   <%- include('admin_script'); -%>
     <script type="text/javascript">
-        
-            db.ref('/footer').once('value', function(snapshot) { // load realtime
-            let footer = snapshot.val();
-            $("#aboutTxt").text(footer.about);
-            $("#contactTxt").text(footer.contact);
+    
+            db.ref('/about').once('value', function(snapshot) { // load realtime
+            let about = snapshot.val();
+            $("#aboutTxt").text(about);
+           
         });
 
         $('#simpanBtn').click(function() {
-            let about = $('#aboutTxt').val();
-            let contact = $('#contactTxt').val();
-            db.ref('/footer').set({
-                
-                "about" : about,
-                "contact" : contact
+            let aboutNew = $('#aboutTxt').val();
+           
+            db.ref('/about').set(
+               aboutNew
 
-            }, function(error) {
+            , function(error) {
             if (error) {
                 // The write failed...
                 alert("Peringatan! Data Gagal Disimpan!")
