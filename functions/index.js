@@ -44,7 +44,7 @@ app.get('/about', function(req,res) {
 
     db.ref("team").once("value")
     .then(function(snapshot) {
-       team = snapshot.val();
+       team = snapshot;
        return db.ref("about").once("value");
         
     })
