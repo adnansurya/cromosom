@@ -16,12 +16,17 @@ app.use('/public',express.static(__dirname + '/public'));
 
 
 let footer;
-
+let recent;
 app.get('/', function(req,res) {
     //render file ejs dari direktori functions/views
-    db.ref("footer").once("value").then(function(snapshot) {
+    db.ref("work").orderByKey().limitToLast(3).once("value")
+    .then(function(snapshot) {
+        recent = snapshot;
+        return db.ref("footer").once("value");
+    })
+    .then(function(snapshot) {
         footer = snapshot.val();
-        res.render("index", {page : 'Home', footer: footer});
+        res.render("index", {page : 'Home', footer : footer, recent : recent});
     });
 
     
