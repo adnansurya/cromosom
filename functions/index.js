@@ -97,9 +97,7 @@ app.get('/admin', function(req,res) {
 
 app.get('/admin_edit_footer', function(req,res) {
     //render file ejs dari direktori functions/views
-    db.ref("footer").once("value").then(function(snapshot) {
-        footer = snapshot.val();
-    });
+   
     res.render("admin_edit_footer");
 });
 
@@ -110,6 +108,11 @@ app.get('/admin_edit_about', function(req,res) {
 app.get('/admin_edit_contact', function(req,res) {
     //render file ejs dari direktori functions/views
     res.render("admin_edit_contact");
+});
+
+app.get('/admin_edit_team', function(req,res) {
+    //render file ejs dari direktori functions/views
+    res.render("admin_edit_team");
 });
 
 

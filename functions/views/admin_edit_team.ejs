@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <%- include('templates/admin_head'); -%>
+    
+       
+
+</head>
+<style>
+    #image-preview{
+        max-height: 150px;
+    }
+
+    #uploader{
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+</style>
+
+<body id="page-top">
+
+        <%- include('templates/admin_navbar'); -%>
+
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <%- include('templates/admin_sidebar'); -%>
+
+    <div id="content-wrapper">
+
+      <div class="container-fluid">
+
+        <!-- Page Content -->
+        <div class="row">
+            <div class="col-md-6 col-sm-6">
+                <div class="cart-title">
+                        <h1>Team</h1>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6">
+                <div class="text-right">
+                    <a class="btn btn-success text-right m-3" href="#dataModal" data-toggle="modal" data-action="add" data-child-id="null">Tambah Team</a>
+                </div>                                        
+            </div>                                    
+            
+        </div>
+
+      </div>
+      <hr>
+      <!-- /.container-fluid -->
+
+      <!-- Sticky Footer -->
+      <%- include('templates/admin_footer'); -%>
+
+    </div>
+    <!-- /.content-wrapper -->
+
+  </div>
+
+  <div class="modal" id="dataModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="judul" class="modal-title">Modal header</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="nama" class=" form-control-label">Nama</label>
+                    <input type="text" id="nama" placeholder="Masukkan Nama" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="keterangan" class=" form-control-label">Keterangan</label>
+                    <input type="text" id="keterangan" placeholder="Masukkan Keterangan" class="form-control">
+                </div>
+                <div class="form-group">
+                    <img id="image-preview" alt="Foto" class="img-thumbnail foto-preview"/>
+                    <br> 
+                    <progress value="0" max="100" id="uploader"></progress>
+                    <br>
+                    <input type="file" accept="image/*" id="gambar" placeholder="Pilih Foto" onchange="previewImage();">
+                </div>
+                    
+                
+              
+              
+            </div>
+            <div class="modal-footer">
+                <button id="konfirmasi"  type="button" class="btn btn-primary">Konfirmasi</button>
+                <button data-dismiss="modal" type="button" class="btn btn-default">Batal</button>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+  <!-- /#wrapper -->
+
+  
+  <%- include('admin_script'); -%>
+  <script>
+       
+       $('#dataModal').on('show.bs.modal', function(e) {
+            let dataObj;
+            let nama, keterangan, foto, namaFoto;
+            //get data-id attribute of the clicked element
+            var dataId = $(e.relatedTarget).data('child-id');
+            action = $(e.relatedTarget).data('action');
+
+            
+
+            // if(action == 'edit' || action == 'delete'){
+         
+            //     nama = dataObj[dataId].nama;
+            //     kode = dataObj[dataId].kode;
+            //     detail = dataObj[dataId].detail;
+            // }
+                                
+            let judulTxt = $(e.currentTarget).find('h4[id="judul"]');            
+            let namaTxt = $(e.currentTarget).find('input[id="nama"]');
+            let keteranganTxt = $(e.currentTarget).find('input[id="keterangan"]');
+            let fotoImg = $(e.currentTarget).find('input[id="gambar"]');
+            let konfirmasiBtn = $(e.currentTarget).find('button[id="konfirmasi"]');
+            let uploaderProg = $(e.currentTarget).find('progress[id="uploader"]');
+
+            if(action == 'add'){
+              
+                judulTxt.text("Tambah Team");
+                konfirmasiBtn.text("Tambahkan");
+                namaTxt.prop('disabled', false);
+                keteranganTxt.prop('disabled', false);
+                fotoImg.prop('disabled', false);
+            }
+
+            fotoImg.change(function(e){
+                
+                foto = e.target.files[0];
+                namaFoto = foto.name;
+
+            });
+
+            konfirmasiBtn.click(function(){
+                if(action == 'add'){
+                    nama = namaTxt.val();
+                    keterangan = keteranganTxt.val();
+                
+                   
+                    namaFoto = nama + '-' + namaFoto;
+                    
+                   
+                    db.ref('/team').push({
+                        nama : nama,
+                        keterangan : keterangan,
+                        foto : namaFoto
+                    }, function(error) {
+                        if (error) {
+                            // The write failed...
+                           alert('Terjadi Kesalahan !');
+                        } else {
+                            // Data saved successfully!
+                            
+
+                            let storageRef = storage.ref('foto/'+namaFoto);
+                            let uploadTask = storageRef.put(foto);
+
+                            uploadTask.on('state_changed',
+
+                                function progress(snapshot){
+                                    let percentage = (snapshot.bytesTransferred / snapshot.totalBytes) *100;
+                                    uploaderProg.val(percentage);
+
+                                },
+                                function error(err){
+                                    alert('Terjadi Kesalahan !');
+                                },
+
+                                function complete(){
+                                    alert('Data berhasil disimpan !');
+                                    location.href="/admin_edit_team"
+                                }
+                            );
+                        
+                        }
+                        
+                    });
+
+                    // fotoImg.addEventListener('change', function(evt) {
+                    //     let firstFile = evt.target.files[0] // upload the first file only
+                    //     let uploadTask = storageRef.put(firstFile)
+                    // });
+
+
+                    
+               
+
+                }
+                
+            });
+           
+
+       });
+
+       
+
+       function previewImage() {
+            document.getElementById("image-preview").style.display = "block";
+            var oFReader = new FileReader();
+            oFReader.readAsDataURL(document.getElementById("gambar").files[0]);
+
+            oFReader.onload = function(oFREvent) {
+            document.getElementById("image-preview").src = oFREvent.target.result;
+            };
+        };
+  </script>
+
+</body>
+
+</html>

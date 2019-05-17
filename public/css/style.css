@@ -1840,7 +1840,7 @@ blockquote p {
     margin-top: 20px;
 }
 
-<<<<<<
+
 
 
 
@@ -2108,7 +2108,7 @@ blockquote p {
   text-orientation: mixed;
   color: white;
   background-color: #D91818;
-  padding: 
+ 
 }
 
 
@@ -2241,7 +2241,7 @@ figure.effect-zoe figcaption {
 	bottom: 0;
 	padding: 0;
 	height: 3.75em;
-	background: # ;
+
 	color: #3c4a50;
 	-webkit-transition: -webkit-transform 0.35s;
 	transition: transform 0.35s;
@@ -2360,7 +2360,7 @@ figure.effect-zoe:hover p.icon-links a:first-child {
   padding-top: 2em;
   padding-bottom: 2em;
 	color: #fff;
-	text-transform: ;
+
 	font-size: 1.25em;
 	-webkit-backface-visibility: hidden;
 	backface-visibility: hidden;
@@ -2436,4 +2436,8 @@ figure.effect-zoe:hover p.icon-links a:first-child {
 
 .limit-icon-width{
   max-width: 150px;
+}
+
+.foto-preview{
+  max-height: 50px;
 }
