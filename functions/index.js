@@ -78,12 +78,17 @@ app.get('/workdetail', function(req,res) {
 
     
 });
-
+let funwork;
 app.get('/funwork', function(req,res) {
     //render file ejs dari direktori functions/views
-    db.ref("footer").once("value").then(function(snapshot) {
+    db.ref("funwork").once("value")
+    .then(function(snapshot) {
+        funwork = snapshot;
+        return db.ref("footer").once("value");
+    })
+    .then(function(snapshot) {
         footer = snapshot.val();
-        res.render("funwork", {page:'Funwork', footer: footer});
+        res.render("funwork", {page:'Funwork', footer: footer, funwork : funwork});
     });
 
    
@@ -147,6 +152,16 @@ app.get('/admin_edit_work', function(req,res) {
         var data = snapshot.val();
         // console.log(snapshot);
         res.render('admin_edit_work', {work : snapshot});
+    });
+   
+});
+
+app.get('/admin_edit_funwork', function(req,res) {
+    //render file ejs dari direktori functions/views
+    db.ref("funwork").once("value").then(function(snapshot) {
+        var data = snapshot.val();
+        // console.log(snapshot);
+        res.render('admin_edit_funwork', {funwork : snapshot});
     });
    
 });

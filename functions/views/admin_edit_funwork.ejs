@@ -39,12 +39,12 @@
         <div class="row">
             <div class="col-md-6 col-sm-6">
                 <div class="cart-title">
-                        <h1>Work</h1>
+                        <h1>Funwork</h1>
                 </div>
             </div>
             <div class="col-md-6 col-sm-6">
                 <div class="text-right">
-                    <a class="btn btn-success text-right m-3" href="#dataModal" data-toggle="modal" data-action="add" data-child-id="null">Tambah Work</a>
+                    <a class="btn btn-success text-right m-3" href="#dataModal" data-toggle="modal" data-action="add" data-child-id="null">Tambah Funwork</a>
                 </div>                                        
             </div>                                    
             
@@ -53,7 +53,7 @@
       </div>
       <hr>
 
-      <table id="tabelWork" class="table table-bordered display responsive" width="100%" cellspacing="0">
+      <table id="tabelFunwork" class="table table-bordered display responsive" width="100%" cellspacing="0">
             <thead>
                 <tr>
                     <th>Nama</th>
@@ -63,14 +63,14 @@
                 </tr>
             </thead>
             <tbody>
-                    <% dataLoad = JSON.stringify(work); %>                
-                    <%  work.forEach(function(isi) { var data = isi.val(); %>
+                    <% dataLoad = JSON.stringify(funwork); %>
+                    <%  funwork.forEach(function(isi) { var data = isi.val(); %>
                         <tr>                                                            
                             <td><%= data.nama %></td>
                             <td><%= data.keterangan %></td>
                             <td>
                                 <% if (data.foto !== "") {%>
-                                    <img  alt="<%= data.nama %>" class="img-thumbnail foto-preview" src="https://firebasestorage.googleapis.com/v0/b/cromosom1.appspot.com/o/work%2F<%= data.foto %>?alt=media">
+                                    <img  alt="<%= data.nama %>" class="img-thumbnail foto-preview" src="https://firebasestorage.googleapis.com/v0/b/cromosom1.appspot.com/o/funwork%2F<%= data.foto %>?alt=media">
                                 <% } else {%>
                                     <p>Tidak Ada Foto</p>
                                 <% } %>
@@ -138,7 +138,7 @@
        
        $('#dataModal').on('show.bs.modal', function(e) {
             let dataObj;
-            let nama, keterangan, work, namaFoto, typeFoto;
+            let nama, keterangan, funwork, namaFoto, typeFoto;
 
             namaFoto = "";
             //get data-id attribute of the clicked element
@@ -157,46 +157,46 @@
             let judulTxt = $(e.currentTarget).find('h4[id="judul"]');            
             let namaTxt = $(e.currentTarget).find('input[id="nama"]');
             let keteranganTxt = $(e.currentTarget).find('input[id="keterangan"]');
-            let workImg = $(e.currentTarget).find('input[id="gambar"]');
+            let funworkImg = $(e.currentTarget).find('input[id="gambar"]');
             let imgPreview = $(e.currentTarget).find('img[id="image-preview"]');
             let konfirmasiBtn = $(e.currentTarget).find('button[id="konfirmasi"]');
             let uploaderProg = $(e.currentTarget).find('progress[id="uploader"]');
 
             namaTxt.val(nama);
             keteranganTxt.val(keterangan);
-            workImg.val("");
+            funworkImg.val("");
           
             
             if(namaFoto != ""){
-                imgPreview.attr('src',"https://firebasestorage.googleapis.com/v0/b/cromosom1.appspot.com/o/work%2F"+ namaFoto + "?alt=media")
+                imgPreview.attr('src',"https://firebasestorage.googleapis.com/v0/b/cromosom1.appspot.com/o/funwork%2F"+ namaFoto + "?alt=media")
             }
             
 
             if(action == 'add'){
               
-                judulTxt.text("Tambah Work");
+                judulTxt.text("Tambah Funwork");
                 konfirmasiBtn.text("Tambahkan");
                 namaTxt.prop('disabled', false);
                 keteranganTxt.prop('disabled', false);
-                workImg.prop('disabled', false);
+                funworkImg.prop('disabled', false);
             }else if(action == 'edit'){
-                judulTxt.text("Edit Work");
+                judulTxt.text("Edit Funwork");
                 konfirmasiBtn.text("Update");
                 namaTxt.prop('disabled', false);
                 keteranganTxt.prop('disabled', false);
-                workImg.prop('disabled', false);
+                funworkImg.prop('disabled', false);
             }else if(action == 'delete'){
-                judulTxt.text("Hapus Work");
+                judulTxt.text("Hapus Funwork");
                 konfirmasiBtn.text("Hapus");
                 namaTxt.prop('disabled', true);
                 keteranganTxt.prop('disabled', true);
-                workImg.prop('disabled', true);
+                funworkImg.prop('disabled', true);
             }
 
-            workImg.change(function(e){
+            funworkImg.change(function(e){
                 
                 foto = e.target.files[0];
-                let filePath = workImg.val(); 
+                let filePath = funworkImg.val(); 
                 typeFoto = filePath.substr(filePath.lastIndexOf('.')+1,filePath.length);
                 console.log("File Extension ->-> "+typeFoto);
                
@@ -207,12 +207,12 @@
                 if(action == 'add'){
                     nama = namaTxt.val();
                     keterangan = keteranganTxt.val();
-                    if(workImg.val() != ""){
+                    if(funworkImg.val() != ""){
                         namaFoto = nama + '.' + typeFoto;
                     }
                     
                    
-                    db.ref('/work').push({
+                    db.ref('/funwork').push({
                         nama : nama,
                         keterangan : keterangan,
                         foto : namaFoto
@@ -223,8 +223,8 @@
                         } else {
                             // Data saved successfully!
                             
-                            if(workImg.val() != ""){
-                                let storageRef = storage.ref('work/'+namaFoto);
+                            if(funworkImg.val() != ""){
+                                let storageRef = storage.ref('funwork/'+namaFoto);
                                 let uploadTask = storageRef.put(foto);
 
                                 uploadTask.on('state_changed',
@@ -240,12 +240,12 @@
 
                                     function complete(){
                                         alert('Data berhasil disimpan !');
-                                        location.href="/admin_edit_work"
+                                        location.href="/admin_edit_funwork"
                                     }
                                 );
                             }else{
                                 alert('Data berhasil disimpan !');
-                                    location.href="/admin_edit_work"
+                                    location.href="/admin_edit_funwork"
                             }
                             
                         
@@ -259,11 +259,11 @@
                 }else if(action == 'edit'){
                     nama = namaTxt.val();
                     keterangan = keteranganTxt.val();                                
-                    if(workImg.val() != ""){
+                    if(funworkImg.val() != ""){
                         namaFoto = nama + '.' + typeFoto;
                     }
                        
-                    db.ref('/work/' + dataId).set({
+                    db.ref('/funwork/' + dataId).set({
                     nama : nama,
                     keterangan : keterangan,
                     foto : namaFoto
@@ -275,8 +275,8 @@
                             // Data saved successfully!
                             
                             
-                            if(workImg.val() != ""){
-                                let storageRef = storage.ref('work/'+namaFoto);
+                            if(funworkImg.val() != ""){
+                                let storageRef = storage.ref('funwork/'+namaFoto);
                                 let uploadTask = storageRef.put(foto);
 
                                 uploadTask.on('state_changed',
@@ -292,12 +292,12 @@
 
                                     function complete(){
                                         alert('Data berhasil disimpan !');
-                                        location.href="/admin_edit_work";
+                                        location.href="/admin_edit_funwork";
                                     }
                                 );
                             }else{
                                 alert('Data berhasil disimpan !');
-                                location.href="/admin_edit_work";
+                                location.href="/admin_edit_funwork";
                             }
                         
                         }
@@ -305,7 +305,7 @@
                     }); 
                     
                 }else if(action == 'delete'){
-                    db.ref('/work/' + dataId).remove(function(error){
+                    db.ref('/funwork/' + dataId).remove(function(error){
                         if (error) {
                             // The write failed...
                         alert('Terjadi Kesalahan !');
@@ -313,18 +313,18 @@
                             // Data saved successfully!
                             
                             if(namaFoto != ""){
-                                let storageRef = storage.ref('work/'+namaFoto);
+                                let storageRef = storage.ref('funwork/'+namaFoto);
                                 storageRef.delete().then(function() {
                                     // File deleted successfully
                                     alert('Data berhasil dihapus !');
-                                    location.href="/admin_edit_work";
+                                    location.href="/admin_edit_funwork";
                                 }).catch(function(error) {
                                     alert('Terjadi Kesalahan !');
                                 });
 
                             }else{
                                 alert('Data berhasil dihapus !');
-                                location.href="/admin_edit_work";
+                                location.href="/admin_edit_funwork";
                             }
                         
                         }

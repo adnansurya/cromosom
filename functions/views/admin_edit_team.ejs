@@ -70,7 +70,7 @@
                             <td><%= data.keterangan %></td>
                             <td>
                                 <% if (data.foto !== "") {%>
-                                    <img class="img-thumbnail foto-preview" src="https://firebasestorage.googleapis.com/v0/b/cromosom1.appspot.com/o/foto%2F<%= data.foto %>?alt=media">
+                                    <img alt="<%= data.nama %>" class="img-thumbnail foto-preview" src="https://firebasestorage.googleapis.com/v0/b/cromosom1.appspot.com/o/foto%2F<%= data.foto %>?alt=media">
                                 <% } else {%>
                                     <p>Tidak Ada Foto</p>
                                 <% } %>
@@ -168,7 +168,7 @@
           
             
             if(namaFoto != ""){
-                imgPreview.attr('src',"https://firebasestorage.googleapis.com/v0/b/cromosom1.appspot.com/o/foto%2F"+ namaFoto + "?alt=media")
+                imgPreview.attr('src',"https://firebasestorage.googleapis.com/v0/b/cromosom1.appspot.com/o/foto%2F"+ namaFoto + "?alt=media")            
             }
             
 

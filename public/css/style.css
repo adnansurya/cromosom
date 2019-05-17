@@ -2427,18 +2427,22 @@ figure.effect-zoe:hover p.icon-links a:first-child {
 }
 
 .homegambar:hover .overlay {
+  height: 15%;
+}
+
+.workgambar:hover .overlay {
   height: 100%;
 }
 
 .text {
   color: white;
-  position: absolute;
+  position: relative;
   top: 50%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  text-align: center;
+  
 }
 
 .textwork {
