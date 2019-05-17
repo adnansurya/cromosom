@@ -30,24 +30,34 @@ app.get('/work', function(req,res) {
     //render file ejs dari direktori functions/views
     db.ref("footer").once("value").then(function(snapshot) {
         footer = snapshot.val();
+        res.render("work", {page:'Work', footer : footer});
     });
 
-    res.render("work", {page:'Work', footer : footer});
+    
 });
 
 let about;
+let team;
 app.get('/about', function(req,res) {
    
     //render file ejs dari direktori functions/views
-    db.ref("about").once("value").then(function(snapshot) {
-        about = snapshot.val();
+
+    db.ref("team").once("value")
+    .then(function(snapshot) {
+       team = snapshot.val();
+       return db.ref("about").once("value");
         
-    });
-    db.ref("footer").once("value").then(function(snapshot) {
+    })
+    .then(function(snapshot) {
+        about = snapshot.val();
+        return db.ref("footer").once("value");
+        
+    })
+    .then(function(snapshot) {
         footer = snapshot.val();
+        res.render("about", {page:'About',footer : footer, about : about, team: team});
     });
 
-    res.render("about", {page:'About',footer : footer, about : about});
    
    
     
@@ -57,32 +67,37 @@ app.get('/workdetail', function(req,res) {
     //render file ejs dari direktori functions/views
     db.ref("footer").once("value").then(function(snapshot) {
         footer = snapshot.val();
+        res.render("workdetail", {page : 'Workdetail', footer : footer});
     });
 
-    res.render("workdetail", {page : 'Workdetail', footer : footer});
+    
 });
 
 app.get('/funwork', function(req,res) {
     //render file ejs dari direktori functions/views
     db.ref("footer").once("value").then(function(snapshot) {
         footer = snapshot.val();
+        res.render("funwork", {page:'Funwork', footer: footer});
     });
 
-    res.render("funwork", {page:'Funwork', footer: footer});
+   
 });
 
 let contact;
 app.get('/contact', function(req,res) {
     //render file ejs dari direktori functions/views
-    db.ref("contact").once("value").then(function(snapshot) {
+    db.ref("contact").once("value")
+    .then(function(snapshot) {
         contact = snapshot.val();
+        return db.ref("footer").once("value");
         
-    });
-    db.ref("footer").once("value").then(function(snapshot) {
+    })
+    .then(function(snapshot) {
         footer = snapshot.val();
+        res.render("contact", {page:'Contact', footer:footer, contact:contact});
     });
 
-    res.render("contact", {page:'Contact', footer:footer, contact:contact});
+   
 });
 
 app.get('/login', function(req,res) {
@@ -112,7 +127,12 @@ app.get('/admin_edit_contact', function(req,res) {
 
 app.get('/admin_edit_team', function(req,res) {
     //render file ejs dari direktori functions/views
-    res.render("admin_edit_team");
+    db.ref("team").once("value").then(function(snapshot) {
+        var data = snapshot.val();
+        // console.log(snapshot);
+        res.render('admin_edit_team', {team : snapshot});
+    });
+   
 });
 
 
