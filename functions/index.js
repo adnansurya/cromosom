@@ -21,16 +21,22 @@ app.get('/', function(req,res) {
     //render file ejs dari direktori functions/views
     db.ref("footer").once("value").then(function(snapshot) {
         footer = snapshot.val();
+        res.render("index", {page : 'Home', footer: footer});
     });
 
-    res.render("index", {page : 'Home', footer: footer});
+    
 });
-
+let work;
 app.get('/work', function(req,res) {
     //render file ejs dari direktori functions/views
-    db.ref("footer").once("value").then(function(snapshot) {
+    db.ref("work").once("value")
+    .then(function(snapshot) {
+        work = snapshot;
+        return db.ref("footer").once("value");
+    })
+    .then(function(snapshot) {
         footer = snapshot.val();
-        res.render("work", {page:'Work', footer : footer});
+        res.render("work", {page:'Work', footer : footer, work : work});
     });
 
     
@@ -131,6 +137,16 @@ app.get('/admin_edit_team', function(req,res) {
         var data = snapshot.val();
         // console.log(snapshot);
         res.render('admin_edit_team', {team : snapshot});
+    });
+   
+});
+
+app.get('/admin_edit_work', function(req,res) {
+    //render file ejs dari direktori functions/views
+    db.ref("work").once("value").then(function(snapshot) {
+        var data = snapshot.val();
+        // console.log(snapshot);
+        res.render('admin_edit_work', {work : snapshot});
     });
    
 });

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <%- include('templates/admin_head'); -%>
+    
+       
+
+</head>
+<style>
+    .foto-preview{
+        max-height: 150px;
+    }
+
+    #uploader{
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+</style>
+
+<body id="page-top">
+
+        <%- include('templates/admin_navbar'); -%>
+
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <%- include('templates/admin_sidebar'); -%>
+
+    <div id="content-wrapper">
+
+      <div class="container-fluid">
+
+        <!-- Page Content -->
+        <div class="row">
+            <div class="col-md-6 col-sm-6">
+                <div class="cart-title">
+                        <h1>Work</h1>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6">
+                <div class="text-right">
+                    <a class="btn btn-success text-right m-3" href="#dataModal" data-toggle="modal" data-action="add" data-child-id="null">Tambah Work</a>
+                </div>                                        
+            </div>                                    
+            
+        </div>
+
+      </div>
+      <hr>
+
+      <table id="tabelWork" class="table table-bordered display responsive" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>Keterangan</th>
+                    <th>Foto</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <% dataLoad = JSON.stringify(work); %>
+                    <%  work.forEach(function(isi) { var data = isi.val(); %>
+                        <tr>                                                            
+                            <td><%= data.nama %></td>
+                            <td><%= data.keterangan %></td>
+                            <td>
+                                <% if (data.foto !== "") {%>
+                                    <img class="img-thumbnail foto-preview" src="https://firebasestorage.googleapis.com/v0/b/cromosom1.appspot.com/o/work%2F<%= data.foto %>?alt=media">
+                                <% } else {%>
+                                    <p>Tidak Ada Foto</p>
+                                <% } %>
+                            </td>
+                            <td>
+                                <a class="btn btn-info btn-sm" href="#dataModal" data-toggle="modal" data-action="edit" data-child-id="<%= isi.key %>">Edit</a>                                                                    
+                                <a class="btn btn-danger btn-sm" href="#dataModal" data-toggle="modal" data-action="delete" data-child-id="<%= isi.key %>">Hapus</a>                                                                    
+                            </td>                                                                                                               
+                        </tr>                                                                        
+                    <%  }); %>                                                           
+            </tbody>
+        </table>     
+      <!-- /.container-fluid -->
+
+      <!-- Sticky Footer -->
+      <%- include('templates/admin_footer'); -%>
+
+    </div>
+    <!-- /.content-wrapper -->
+
+  </div>
+
+  <div class="modal" id="dataModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="judul" class="modal-title">Modal header</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="nama" class=" form-control-label">Nama</label>
+                    <input type="text" id="nama" placeholder="Masukkan Nama" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="keterangan" class=" form-control-label">Keterangan</label>
+                    <input type="text" id="keterangan" placeholder="Masukkan Keterangan" class="form-control">
+                </div>
+                <div class="form-group">
+                    <img id="image-preview" alt="Foto" class="img-thumbnail foto-preview"/>
+                    <br> 
+                    <progress value="0" max="100" id="uploader"></progress>
+                    <br>
+                    <input type="file" accept="image/*" id="gambar" placeholder="Pilih Foto" onchange="previewImage();">
+                </div>
+                    
+                
+              
+              
+            </div>
+            <div class="modal-footer">
+                <button id="konfirmasi"  type="button" class="btn btn-primary">Konfirmasi</button>
+                <button data-dismiss="modal" type="button" class="btn btn-default">Batal</button>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+  <!-- /#wrapper -->
+
+  
+  <%- include('admin_script'); -%>
+  <script>
+       
+       $('#dataModal').on('show.bs.modal', function(e) {
+            let dataObj;
+            let nama, keterangan, work, namaFoto, typeFoto;
+
+            namaFoto = "";
+            //get data-id attribute of the clicked element
+            let dataId = $(e.relatedTarget).data('child-id');
+            action = $(e.relatedTarget).data('action');
+
+            
+
+            if(action == 'edit' || action == 'delete'){
+                dataObj = <%-dataLoad%>;
+                nama = dataObj[dataId].nama;
+                keterangan = dataObj[dataId].keterangan;
+                namaFoto = dataObj[dataId].foto;
+            }
+                                
+            let judulTxt = $(e.currentTarget).find('h4[id="judul"]');            
+            let namaTxt = $(e.currentTarget).find('input[id="nama"]');
+            let keteranganTxt = $(e.currentTarget).find('input[id="keterangan"]');
+            let workImg = $(e.currentTarget).find('input[id="gambar"]');
+            let imgPreview = $(e.currentTarget).find('img[id="image-preview"]');
+            let konfirmasiBtn = $(e.currentTarget).find('button[id="konfirmasi"]');
+            let uploaderProg = $(e.currentTarget).find('progress[id="uploader"]');
+
+            namaTxt.val(nama);
+            keteranganTxt.val(keterangan);
+            workImg.val("");
+          
+            
+            if(namaFoto != ""){
+                imgPreview.attr('src',"https://firebasestorage.googleapis.com/v0/b/cromosom1.appspot.com/o/work%2F"+ namaFoto + "?alt=media")
+            }
+            
+
+            if(action == 'add'){
+              
+                judulTxt.text("Tambah Work");
+                konfirmasiBtn.text("Tambahkan");
+                namaTxt.prop('disabled', false);
+                keteranganTxt.prop('disabled', false);
+                workImg.prop('disabled', false);
+            }else if(action == 'edit'){
+                judulTxt.text("Edit Work");
+                konfirmasiBtn.text("Update");
+                namaTxt.prop('disabled', false);
+                keteranganTxt.prop('disabled', false);
+                workImg.prop('disabled', false);
+            }else if(action == 'delete'){
+                judulTxt.text("Hapus Work");
+                konfirmasiBtn.text("Hapus");
+                namaTxt.prop('disabled', true);
+                keteranganTxt.prop('disabled', true);
+                workImg.prop('disabled', true);
+            }
+
+            workImg.change(function(e){
+                
+                foto = e.target.files[0];
+                let filePath = workImg.val(); 
+                typeFoto = filePath.substr(filePath.lastIndexOf('.')+1,filePath.length);
+                console.log("File Extension ->-> "+typeFoto);
+               
+
+            });
+
+            konfirmasiBtn.click(function(){
+                if(action == 'add'){
+                    nama = namaTxt.val();
+                    keterangan = keteranganTxt.val();
+                    if(workImg.val() != ""){
+                        namaFoto = nama + '.' + typeFoto;
+                    }
+                    
+                   
+                    db.ref('/work').push({
+                        nama : nama,
+                        keterangan : keterangan,
+                        foto : namaFoto
+                    }, function(error) {
+                        if (error) {
+                            // The write failed...
+                           alert('Terjadi Kesalahan !');
+                        } else {
+                            // Data saved successfully!
+                            
+                            if(workImg.val() != ""){
+                                let storageRef = storage.ref('work/'+namaFoto);
+                                let uploadTask = storageRef.put(foto);
+
+                                uploadTask.on('state_changed',
+
+                                    function progress(snapshot){
+                                        let percentage = (snapshot.bytesTransferred / snapshot.totalBytes) *100;
+                                        uploaderProg.val(percentage);
+
+                                    },
+                                    function error(err){
+                                        alert('Terjadi Kesalahan !');
+                                    },
+
+                                    function complete(){
+                                        alert('Data berhasil disimpan !');
+                                        location.href="/admin_edit_work"
+                                    }
+                                );
+                            }else{
+                                alert('Data berhasil disimpan !');
+                                    location.href="/admin_edit_work"
+                            }
+                            
+                        
+                        }
+                        
+                    });
+
+                
+                
+
+                }else if(action == 'edit'){
+                    nama = namaTxt.val();
+                    keterangan = keteranganTxt.val();                                
+                    if(workImg.val() != ""){
+                        namaFoto = nama + '.' + typeFoto;
+                    }
+                       
+                    db.ref('/work/' + dataId).set({
+                    nama : nama,
+                    keterangan : keterangan,
+                    foto : namaFoto
+                    }, function(error) {
+                        if (error) {
+                            // The write failed...
+                        alert('Terjadi Kesalahan !');
+                        } else {
+                            // Data saved successfully!
+                            
+                            
+                            if(workImg.val() != ""){
+                                let storageRef = storage.ref('work/'+namaFoto);
+                                let uploadTask = storageRef.put(foto);
+
+                                uploadTask.on('state_changed',
+
+                                    function progress(snapshot){
+                                        let percentage = (snapshot.bytesTransferred / snapshot.totalBytes) *100;
+                                        uploaderProg.val(percentage);
+
+                                    },
+                                    function error(err){
+                                        alert('Terjadi Kesalahan !');
+                                    },
+
+                                    function complete(){
+                                        alert('Data berhasil disimpan !');
+                                        location.href="/admin_edit_work";
+                                    }
+                                );
+                            }else{
+                                alert('Data berhasil disimpan !');
+                                location.href="/admin_edit_work";
+                            }
+                        
+                        }
+                        
+                    }); 
+                    
+                }else if(action == 'delete'){
+                    db.ref('/work/' + dataId).remove(function(error){
+                        if (error) {
+                            // The write failed...
+                        alert('Terjadi Kesalahan !');
+                        } else {
+                            // Data saved successfully!
+                            
+                            if(namaFoto != ""){
+                                let storageRef = storage.ref('work/'+namaFoto);
+                                storageRef.delete().then(function() {
+                                    // File deleted successfully
+                                    alert('Data berhasil dihapus !');
+                                    location.href="/admin_edit_work";
+                                }).catch(function(error) {
+                                    alert('Terjadi Kesalahan !');
+                                });
+
+                            }else{
+                                alert('Data berhasil dihapus !');
+                                location.href="/admin_edit_work";
+                            }
+                        
+                        }
+                        
+                    });
+                }
+                
+            });
+           
+
+       });
+
+       
+
+       function previewImage() {
+            document.getElementById("image-preview").style.display = "block";
+            var oFReader = new FileReader();
+            oFReader.readAsDataURL(document.getElementById("gambar").files[0]);
+
+            oFReader.onload = function(oFREvent) {
+            document.getElementById("image-preview").src = oFREvent.target.result;
+            };
+        };
+  </script>
+
+</body>
+
+</html>

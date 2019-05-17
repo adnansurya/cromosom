@@ -2063,8 +2063,15 @@ blockquote p {
   filter: alpha(opacity=0);
   -webkit-transition: all 1.4s ease;
   transition: all 0.4s ease;
-  margin: 40% 0 0;
-  padding: 7px 14px;
+ 
+  margin: 20% 0 0;
+  /* padding: 7px 14px; */
+  /* position: absolute;
+   top: 50%;
+  left: 50%; */
+  /* -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); */
 }
 
 
@@ -2420,19 +2427,43 @@ figure.effect-zoe:hover p.icon-links a:first-child {
 }
 
 .homegambar:hover .overlay {
-  height: 15%;
+  height: 100%;
 }
 
 .text {
   color: white;
-  position: relative;
+  position: absolute;
   top: 50%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  
+  text-align: center;
 }
+
+.textwork {
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 20px;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.workimage {
+  width: 100%;
+  height: 50vh;
+  -o-object-fit: cover;
+  object-fit: cover;
+
+} 
+
+
+  
+
 
 .limit-icon-width{
   max-width: 150px;
