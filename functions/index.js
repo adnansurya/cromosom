@@ -44,11 +44,15 @@ app.get('/work', function(req,res) {
 
 let about;
 let team;
+let service;
 app.get('/about', function(req,res) {
    
     //render file ejs dari direktori functions/views
-
-    db.ref("team").once("value")
+    db.ref("service").once("value")
+    .then(function(snapshot) {
+        service = snapshot;
+        return db.ref("team").once("value");
+    })    
     .then(function(snapshot) {
        team = snapshot;
        return db.ref("about").once("value");
@@ -61,7 +65,7 @@ app.get('/about', function(req,res) {
     })
     .then(function(snapshot) {
         footer = snapshot.val();
-        res.render("about", {page:'About',footer : footer, about : about, team: team});
+        res.render("about", {page:'About',footer : footer, about : about, team: team, service : service});
     });
 
    
@@ -162,6 +166,16 @@ app.get('/admin_edit_funwork', function(req,res) {
         var data = snapshot.val();
         // console.log(snapshot);
         res.render('admin_edit_funwork', {funwork : snapshot});
+    });
+   
+});
+
+app.get('/admin_edit_service', function(req,res) {
+    //render file ejs dari direktori functions/views
+    db.ref("service").once("value").then(function(snapshot) {
+        var data = snapshot.val();
+        // console.log(snapshot);
+        res.render('admin_edit_service', {service : snapshot});
     });
    
 });
