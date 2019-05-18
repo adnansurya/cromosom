@@ -105,10 +105,12 @@
                 <div class="form-group">
                     <label for="nama" class=" form-control-label">Nama</label>
                     <input type="text" id="nama" placeholder="Masukkan Nama" class="form-control">
-                </div>
+                </div>                
                 <div class="form-group">
                     <label for="keterangan" class=" form-control-label">Keterangan</label>
-                    <input type="text" id="keterangan" placeholder="Masukkan Keterangan" class="form-control">
+                    <div class="form-label-group">                            
+                        <textarea class="form-control" style="width:100%" id="keterangan" rows="5" placeholder="Masukkan Keterangan"></textarea>
+                    </div>
                 </div>
                 <div class="form-group">
                     <img id="image-preview" alt="Foto" class="img-thumbnail foto-preview"/>
@@ -156,14 +158,14 @@
                                 
             let judulTxt = $(e.currentTarget).find('h4[id="judul"]');            
             let namaTxt = $(e.currentTarget).find('input[id="nama"]');
-            let keteranganTxt = $(e.currentTarget).find('input[id="keterangan"]');
+            let keteranganTxt = $(e.currentTarget).find('textarea[id="keterangan"]');
             let funworkImg = $(e.currentTarget).find('input[id="gambar"]');
             let imgPreview = $(e.currentTarget).find('img[id="image-preview"]');
             let konfirmasiBtn = $(e.currentTarget).find('button[id="konfirmasi"]');
             let uploaderProg = $(e.currentTarget).find('progress[id="uploader"]');
 
             namaTxt.val(nama);
-            keteranganTxt.val(keterangan);
+            keteranganTxt.text(keterangan);
             funworkImg.val("");
           
             

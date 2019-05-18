@@ -100,8 +100,10 @@
                 </div>
                 <div class="form-group">
                     <label for="keterangan" class=" form-control-label">Keterangan</label>
-                    <input type="text" id="keterangan" placeholder="Masukkan Keterangan" class="form-control">
-                </div>                                                                             
+                    <div class="form-label-group">                            
+                        <textarea class="form-control" style="width:100%" id="keterangan" rows="5" placeholder="Masukkan Keterangan"></textarea>
+                    </div>
+                </div>                                                                           
             </div>
             <div class="modal-footer">
                 <button id="konfirmasi"  type="button" class="btn btn-primary">Konfirmasi</button>
@@ -137,12 +139,12 @@
                                 
             let judulTxt = $(e.currentTarget).find('h4[id="judul"]');            
             let namaTxt = $(e.currentTarget).find('input[id="nama"]');
-            let keteranganTxt = $(e.currentTarget).find('input[id="keterangan"]');    
+            let keteranganTxt = $(e.currentTarget).find('textarea[id="keterangan"]');    
             let konfirmasiBtn = $(e.currentTarget).find('button[id="konfirmasi"]');
           
 
             namaTxt.val(nama);
-            keteranganTxt.val(keterangan);                                         
+            keteranganTxt.text(keterangan);                                         
 
             if(action == 'add'){
               
