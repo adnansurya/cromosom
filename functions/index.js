@@ -15,6 +15,7 @@ app.use('/public',express.static(__dirname + '/public'));
 
 
 
+
 let footer;
 let recent;
 app.get('/', function(req,res) {
@@ -77,12 +78,18 @@ app.get('/about', function(req,res) {
    
     
 });
-
-app.get('/workdetail', function(req,res) {
+let workdetail;
+app.get('/workdetail/:id', function(req,res) {
     //render file ejs dari direktori functions/views
-    db.ref("footer").once("value").then(function(snapshot) {
+    db.ref("work/"+req.params.id).once("value")
+    .then(function(snapshot) {
+        workdetail = snapshot.val();
+        return db.ref("footer").once("value");
+    })
+    .then(function(snapshot) {
         footer = snapshot.val();
-        res.render("workdetail", {page : 'Workdetail', footer : footer});
+        res.render("workdetail", {page : 'Workdetail', footer : footer, workdetail:workdetail});
+        // res.send(workdetail);
     });
 
     
