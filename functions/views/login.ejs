@@ -17,7 +17,7 @@
 
     <!-- Firebase App is always required and must be first -->
 <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-app.js"></script>
-
+<script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-database.js"></script>
 <!-- Add additional services that you want to use -->
 <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-auth.js"></script>
 
@@ -54,11 +54,16 @@
     </div>
   </div>
   <script type="text/javascript">
+   const  db = firebase.database();
 
     firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-            
-            location.href = '/admin';
+            if (user) {                    
+              db.ref("users/"+user.uid).once("value").then(function(snapshot) {
+                    var data = snapshot.val();                           
+                    if(data.roles == 'admin'){
+                      location.href = '/admin';
+                    }
+              });  
             } else {
             // // No user is signed in.
             console.log("Tidak ada user yang login");

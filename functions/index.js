@@ -199,7 +199,7 @@ exports.newProfile = functions.auth.user().onCreate((user) => {
 
     return admin.database().ref("/users/" + user.uid).set({
       email : user.email,
-      role : 'anonymous'
+      roles : 'anonymous'
     });
   
   });

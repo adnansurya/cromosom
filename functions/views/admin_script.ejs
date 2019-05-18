@@ -39,8 +39,15 @@
     function cekLogin(){
 
         firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-           
+            if (user) {             
+              db.ref("users/"+user.uid).once("value").then(function(snapshot) {
+                  var data = snapshot.val();                           
+                  if(data.roles == 'admin'){
+                    $('#emailTxt').text(data.email);
+                  }else{
+                    logout();
+                  }
+              });                            
             
             } else {
             // // No user is signed in.
