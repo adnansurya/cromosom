@@ -1,17 +1,17 @@
 <!-- Header Section -->
-<header class="container">
-    <div class="site-heading text-center d-none d-lg-block">
-        <a href="/"><img class="site-logo pt-3" src="<% if (page === 'Workdetail') { %>../<% } %>img/logo.png" ></a>
+<header id="navbar" class="container-fluid" style="transition: .5s ease;">
+    <div class="logo site-heading text-center d-none d-lg-block">
+        <a href="/"><img id="logo" style="max-width: 300px;" class="ml-3 site-logo pt-3" src="<% if (page === 'Workdetail') { %>../<% } %>img/logo.png" ></a>
     </div>
         
-    <nav class="navbar navbar-expand-lg navbar-light bg-white container col-xl-5 col-lg-6 col-md-8 text-center">
+    <nav  class="navbar navbar-expand-lg navbar-light bg-white container">
         <div class="container">
             <a class="navbar-brand text-uppercase text-expanded font-weight-bold d-lg-none" href="/"><img id="logo_img" class="img-fluid limit-icon-width" src="<% if (page === 'Workdetail') { %>../<% } %>img/logo.png"></a>
             <button class="navbar-toggler mb-3 mt-3" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav">
+                <ul id="menu" class="nav navbar-nav navbar-center">
                     <li class="nav-item  <% if (page === 'Work') { %> active work  <% } %>">
                         <a class="nav-link" href="/work">work</a>
                     </li>
@@ -29,3 +29,43 @@
         </div>
     </nav>
 </header>
+
+
+<script>
+    window.onscroll = function() {myFunction()};
+    
+    var navbar = document.getElementById("navbar");
+    var menu = document.getElementById("menu");
+    var logo = document.getElementById("logo");
+    var sticky = navbar.offsetTop;
+    logo.classList.add("mt-3")
+  
+    
+    
+    function myFunction() {
+        logo.classList.remove("mt-3") ;  
+        console.log("position : " + window.pageYOffset);
+        
+      if (window.pageYOffset > sticky) {
+        navbar.classList.add("sticky")
+        navbar.classList.remove("mt-3")             
+        menu.classList.add("ml-auto");
+        menu.classList.remove("navbar-center");
+        logo.setAttribute("style", "max-width :200px; margin-top:15px");
+       
+       
+        
+        
+      } else {
+        navbar.classList.remove("sticky");
+        menu.classList.remove("ml-auto");
+        menu.classList.add("navbar-center")
+        navbar.classList.add("mt-3")
+        logo.setAttribute("style", "max-width :300px;");
+       // navbar.setAttribute("style", " transition: .5s ease;");
+       
+      
+      }
+    }
+
+    </script>

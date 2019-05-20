@@ -1849,7 +1849,7 @@ blockquote p {
   font-family: 'Poppins', sans-serif;
   font-family: 'Lato', sans-serif;
   font-weight: 700;
-  margin-bottom: 30px;
+ 
   letter-spacing: 0.5px;
   position: relative;
   padding-bottom: 15px;
@@ -1872,7 +1872,7 @@ blockquote p {
   font-family: 'Poppins', sans-serif;
   font-family: 'Lato', sans-serif;
   font-weight: 700;
-  margin-bottom: 30px;
+
   letter-spacing: 0.5px;
   position: relative;
   padding-bottom: 15px;
@@ -1896,7 +1896,7 @@ blockquote p {
   font-family: 'Poppins', sans-serif;
   font-family: 'Lato', sans-serif;
   font-weight: 700;
-  margin-bottom: 30px;
+  
   letter-spacing: 0.5px;
   position: relative;
   padding-bottom: 15px;
@@ -1919,7 +1919,7 @@ blockquote p {
   font-family: 'Poppins', sans-serif;
   font-family: 'Lato', sans-serif;
   font-weight: 700;
-  margin-bottom: 30px;
+ 
   letter-spacing: 0.5px;
   position: relative;
   padding-bottom: 15px;
@@ -2467,7 +2467,9 @@ figure.effect-zoe:hover p.icon-links a:first-child {
 } 
 
 
-  
+.logo{
+  max-width: 250;
+}  
 
 
 .limit-icon-width{
@@ -2477,3 +2479,42 @@ figure.effect-zoe:hover p.icon-links a:first-child {
 .foto-preview{
   max-height: 50px;
 }
+
+.navbar-nav.navbar-center {
+    
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  }
+  
+  #navbar {
+    overflow: hidden;
+    background-color: #FFF;
+  }
+  
+  .sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    
+    
+  }
+  
+  .sticky .logo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #FFF;
+    transition: top 0.5s;
+  }
+  
+  .logoimg{
+      max-width: 300px;
+  }
+  
+  
+  
+  .sticky + .content {
+    padding-top: 60px;
+  }
