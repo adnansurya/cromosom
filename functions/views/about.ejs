@@ -38,10 +38,13 @@
                 <div class="col-md-12 py-5">
                     <h3 class="letterspace">SERVICES</h3>
                 </div>
-                <div class="col-md-12 pb-5 row servies">
-                        <%  service.forEach(function(isi) { var data = isi.val(); %>
-                            <div class="miring mx-2 pt-4 pb-4"><%= data.nama %></div>
-                        <%  }); %>                         
+                <div class="col-md-12 pb-5 servies">
+                    <div class="row">
+                            <%  service.forEach(function(isi) { var data = isi.val(); %>
+                                <div class="col-lg-4 col-md-6 mb-5"><h3><%= data.nama %></h2></div>
+                            <%  }); %> 
+                    </div>
+                                               
                                             
                 </div>      
             </div>
