@@ -117,7 +117,9 @@
                     <br> 
                     <progress value="0" max="100" id="uploader"></progress>
                     <br>
-                    <input type="file" accept="image/*" id="gambar" placeholder="Pilih Foto" onchange="previewImage();">
+                    <!-- <input type="file" accept="image/*" id="gambar" placeholder="Pilih Foto" onchange="previewImage();" multiple> -->
+                    <input type="file" accept="image/*" multiple id="gallery-photo-add">
+                    <div class="gallery"></div>
                 </div>
                     
                 
@@ -350,6 +352,36 @@
             document.getElementById("image-preview").src = oFREvent.target.result;
             };
         };
+
+        $(function() {
+            // Multiple images preview in browser
+            var imagesPreview = function(input, placeToInsertImagePreview) {
+                
+                if (input.files) {
+                    var filesAmount = input.files.length;
+
+                    for (i = 0; i < filesAmount; i++) {
+                        var reader = new FileReader();
+
+                        reader.onload = function(event) {
+                           var gambar =  $($.parseHTML('<img>')).attr('src', event.target.result);
+                           gambar.attr('class', 'img-thumbnail foto-preview');
+                           gambar.appendTo(placeToInsertImagePreview);
+
+                        }
+
+                        reader.readAsDataURL(input.files[i]);
+                    }
+                }
+
+            };
+
+            $('#gallery-photo-add').on('change', function() {
+                //this.reset();
+                $('div.gallery').empty();
+                imagesPreview(this, 'div.gallery');
+            });
+        });
   </script>
 
 </body>
