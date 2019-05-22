@@ -74,12 +74,12 @@
                             <td><%= data.keterangan %></td>
                             <td>
                                 <% if (data.foto !== "") { %>
-                                    <% for(var i = 0; i < data.foto.length; i++) { var obj = data.foto[i] %>
+                                    <% for(var i = 0; i < data.foto.length; i++) { var obj = data.foto[i]; if (obj !== undefined){ %>
                                         <a href="#imgModal" data-toggle="modal" data-img-name="<%= obj %>" data-nama="<%= isi.key %>">
                                             <img  alt="<%= obj %>" class="img-thumbnail foto-table" src="https://firebasestorage.googleapis.com/v0/b/cromosom1.appspot.com/o/funwork%2F<%= isi.key %>%2F<%= obj %>?alt=media">
                                         </a>
                                         
-                                    <% } %>
+                                    <% }} %>
                                 <% } else {%>
                                     <p>Tidak Ada Foto</p>
                                 <% } %>
