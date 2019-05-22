@@ -13,6 +13,10 @@
         max-height: 150px;
     }
 
+    .foto-table{
+        max-height: 50px;
+    }
+
     #uploader{
         -webkit-appearance: none;
         appearance: none;
@@ -69,8 +73,10 @@
                             <td><%= data.nama %></td>
                             <td><%= data.keterangan %></td>
                             <td>
-                                <% if (data.foto !== "") {%>
-                                    <img  alt="<%= data.nama %>" class="img-thumbnail foto-preview" src="https://firebasestorage.googleapis.com/v0/b/cromosom1.appspot.com/o/funwork%2F<%= data.foto %>?alt=media">
+                                <% if (data.foto !== "") { %>
+                                    <% for(var i = 0; i < data.foto.length; i++) { var obj = data.foto[i] %>
+                                        <img  alt="<%= obj %>" class="img-thumbnail foto-table" src="https://firebasestorage.googleapis.com/v0/b/cromosom1.appspot.com/o/funwork%2F<%= obj %>?alt=media">
+                                    <% } %>
                                 <% } else {%>
                                     <p>Tidak Ada Foto</p>
                                 <% } %>
@@ -118,7 +124,7 @@
                     <progress value="0" max="100" id="uploader"></progress>
                     <br>
                     <!-- <input type="file" accept="image/*" id="gambar" placeholder="Pilih Foto" onchange="previewImage();" multiple> -->
-                    <input type="file" accept="image/*" multiple id="gallery-photo-add">
+                    <input type="file" accept="image/*" multiple id="gambar">
                     <div class="gallery"></div>
                 </div>
                     
@@ -141,7 +147,7 @@
   <script>
        
        $('#dataModal').on('show.bs.modal', function(e) {
-            let dataObj;
+            let dataObj, foto, namaurl;
             let nama, keterangan, funwork, namaFoto, typeFoto;
 
             namaFoto = "";
@@ -199,10 +205,13 @@
 
             funworkImg.change(function(e){
                 
-                foto = e.target.files[0];
-                let filePath = funworkImg.val(); 
-                typeFoto = filePath.substr(filePath.lastIndexOf('.')+1,filePath.length);
-                console.log("File Extension ->-> "+typeFoto);
+                // foto = e.target.files;
+                // let filePath = funworkImg.val(); 
+                // typeFoto = filePath.substr(filePath.lastIndexOf('.')+1,filePath.length);
+                // console.log("File Extension ->-> "+typeFoto);
+                $('div.gallery').empty();
+                imagesPreview(this, 'div.gallery');
+                foto = e.target.files;
                
 
             });
@@ -211,12 +220,34 @@
                 if(action == 'add'){
                     nama = namaTxt.val();
                     keterangan = keteranganTxt.val();
-                    if(funworkImg.val() != ""){
-                        namaFoto = nama + '.' + typeFoto;
-                    }
+                    // if(funworkImg.val() != ""){
+                    //     namaFoto = nama + '.' + typeFoto;
+                    // }
                     
-                   
-                    db.ref('/funwork').push({
+                    namaurl = slugify(nama);
+
+
+                    namaFoto = {};
+             
+            
+
+                    
+                    //alert(foto.length);
+                    if(foto){
+                        var filesAmount = foto.length;
+
+                        for (i = 0; i < filesAmount; i++) {
+                            
+                            filePath = foto[i].name;
+                            typeFoto = filePath.substr(filePath.lastIndexOf('.')+1,filePath.length);
+                            namaFoto[i] = namaurl+"("+i+")"+"."+typeFoto;
+                            
+                            
+                        }
+                        // alert(JSON.stringify(namaFoto));
+                    }
+
+                    db.ref('/funwork/'+namaurl).set({                                            
                         nama : nama,
                         keterangan : keterangan,
                         foto : namaFoto
@@ -227,11 +258,15 @@
                         } else {
                             // Data saved successfully!
                             
-                            if(funworkImg.val() != ""){
-                                let storageRef = storage.ref('funwork/'+namaFoto);
-                                let uploadTask = storageRef.put(foto);
+                            if(foto){
+                                var filesAmount = foto.length;
 
-                                uploadTask.on('state_changed',
+                                for (i = 0; i < filesAmount; i++) {
+                                    
+                                    let storageRef = storage.ref('funwork/'+namaurl+"/"+namaFoto[i]);
+                                    let uploadTask = storageRef.put(foto[i]);
+                                    
+                                    uploadTask.on('state_changed',
 
                                     function progress(snapshot){
                                         let percentage = (snapshot.bytesTransferred / snapshot.totalBytes) *100;
@@ -240,13 +275,21 @@
                                     },
                                     function error(err){
                                         alert('Terjadi Kesalahan !');
+                                        
                                     },
 
-                                    function complete(){
-                                        alert('Data berhasil disimpan !');
-                                        location.href="/admin_edit_funwork"
-                                    }
-                                );
+                                    function complete(){                                                                        
+                                        if(i == filesAmount){
+                                            alert('Data berhasil disimpan !');
+                                            location.href="/admin_edit_funwork"
+                                        }
+                                        
+                                        
+                                    });
+                                }
+                                
+
+                                
                             }else{
                                 alert('Data berhasil disimpan !');
                                     location.href="/admin_edit_funwork"
@@ -280,6 +323,7 @@
                             
                             
                             if(funworkImg.val() != ""){
+                                
                                 let storageRef = storage.ref('funwork/'+namaFoto);
                                 let uploadTask = storageRef.put(foto);
 
@@ -353,35 +397,33 @@
             };
         };
 
-        $(function() {
-            // Multiple images preview in browser
-            var imagesPreview = function(input, placeToInsertImagePreview) {
-                
-                if (input.files) {
-                    var filesAmount = input.files.length;
+        
+        // Multiple images preview in browser
+        let imagesPreview = function(input, placeToInsertImagePreview) {
+            
+            if (input.files) {
+                var filesAmount = input.files.length;
 
-                    for (i = 0; i < filesAmount; i++) {
-                        var reader = new FileReader();
+                for (i = 0; i < filesAmount; i++) {
+                    var reader = new FileReader();
+                    
+                    reader.onload = function(event) {
 
-                        reader.onload = function(event) {
-                           var gambar =  $($.parseHTML('<img>')).attr('src', event.target.result);
-                           gambar.attr('class', 'img-thumbnail foto-preview');
-                           gambar.appendTo(placeToInsertImagePreview);
+                        var gambar =  $($.parseHTML('<img>')).attr('src', event.target.result);
+                        gambar.attr('class', 'img-thumbnail foto-preview');
+                        gambar.appendTo(placeToInsertImagePreview);
 
-                        }
-
-                        reader.readAsDataURL(input.files[i]);
                     }
+
+                    reader.readAsDataURL(input.files[i]);
+                    
                 }
+            }
 
-            };
+        };
 
-            $('#gallery-photo-add').on('change', function() {
-                //this.reset();
-                $('div.gallery').empty();
-                imagesPreview(this, 'div.gallery');
-            });
-        });
+       
+        
   </script>
 
 </body>
