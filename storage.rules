@@ -11,8 +11,10 @@ service firebase.storage {
     }
 
      match /funwork/{fileName} {
-      allow write: if request.auth != null;
-      allow read;
+      match /{allPaths=**}{
+        allow write: if request.auth != null;
+        allow read;
+     }
     }
 
     match /{allPaths=**} {
