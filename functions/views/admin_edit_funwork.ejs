@@ -75,7 +75,7 @@
                             <td>
                                 <% if (data.foto !== "") { %>
                                     <% for(var i = 0; i < data.foto.length; i++) { var obj = data.foto[i]; if (obj !== undefined){ %>
-                                        <a href="#imgModal" data-toggle="modal" data-img-name="<%= obj %>" data-nama="<%= isi.key %>">
+                                        <a href="#imgModal" data-toggle="modal" data-img-num="<%= i %>" data-img-name="<%= obj %>" data-nama="<%= isi.key %>">
                                             <img  alt="<%= obj %>" class="img-thumbnail foto-table" src="https://firebasestorage.googleapis.com/v0/b/cromosom1.appspot.com/o/funwork%2F<%= isi.key %>%2F<%= obj %>?alt=media">
                                         </a>
                                         
@@ -121,16 +121,7 @@
                         <textarea class="form-control" style="width:100%" id="keterangan" rows="5" placeholder="Masukkan Keterangan"></textarea>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="gallery"></div>
-                    <br> 
-                    <progress value="0" max="100" id="uploader"></progress>
-                    <br>
-                    
-                    <input type="file" accept="image/*" multiple id="gambar">
-                   
-                </div>
-                    
+              
                 
               
               
@@ -160,8 +151,10 @@
                         <br>
                         <input type="file" accept="image/*" id="gambarPrev" placeholder="Pilih Foto" onchange="previewImage();">                        
                     </div>
+                    <button id="hapusImg"  type="button" class="btn btn-danger">Hapus Gambar</button>
                 </div>
                 <div class="modal-footer">
+                  
                     <button id="konfirmasi"  type="button" class="btn btn-primary">Konfirmasi</button>
                     <button data-dismiss="modal" type="button" class="btn btn-default">Batal</button>
                   
@@ -177,12 +170,14 @@
         $('#imgModal').on('show.bs.modal', function(e) {
             let foto, typeFoto;
             let imgName = $(e.relatedTarget).data('img-name');
+            let imgNum = $(e.relatedTarget).data('img-num');
             let nama = $(e.relatedTarget).data('nama');
 
             let judulTxt = $(e.currentTarget).find('h4[id="judul"]');            
             let funworkImg = $(e.currentTarget).find('input[id="gambarPrev"]');
             let imgPreview = $(e.currentTarget).find('img[id="image-preview"]');
             let konfirmasiBtn = $(e.currentTarget).find('button[id="konfirmasi"]');
+            let hapusBtn = $(e.currentTarget).find('button[id="hapusImg"]');
             let uploaderProg = $(e.currentTarget).find('progress[id="uploader"]');
 
             judulTxt.text("Ubah Gambar");
@@ -197,6 +192,34 @@
                
             });
 
+            hapusBtn.click(function(){
+
+                db.ref('/funwork/' + nama + '/foto/' + imgNum).remove(function(error){
+                        if (error) {                            
+                            alert('Terjadi Kesalahan !');
+                        } else {
+                            
+                            let storageRef = storage.ref('funwork/'+nama+"/"+imgName);
+
+
+                            storageRef.delete().then(function() {
+
+                                alert('Data berhasil dihapus !');
+                                location.href="/admin_edit_funwork";
+
+                            }).catch(function(error) {
+                                alert('Terjadi Kesalahan !');
+                            });
+
+                            
+                        
+                        }
+                        
+                    });
+
+               
+
+            });
             konfirmasiBtn.click(function(){
                 if(foto){
                     let storageRef = storage.ref('funwork/'+nama+"/"+imgName);
