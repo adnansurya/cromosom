@@ -121,7 +121,15 @@
                         <textarea class="form-control" style="width:100%" id="keterangan" rows="5" placeholder="Masukkan Keterangan"></textarea>
                     </div>
                 </div>
-              
+                <div class="form-group">
+                    <div class="gallery"></div>
+                    <br> 
+                    <progress value="0" max="100" id="uploader"></progress>
+                    <br>
+                    
+                    <input type="file" accept="image/*" multiple id="gambar">
+                       
+                </div>
                 
               
               
@@ -300,7 +308,7 @@
                 konfirmasiBtn.text("Update");
                 namaTxt.prop('disabled', false);
                 keteranganTxt.prop('disabled', false);
-                funworkImg.prop('disabled', false);
+                funworkImg.prop('disabled', true);
             }else if(action == 'delete'){
                 judulTxt.text("Hapus Funwork");
                 konfirmasiBtn.text("Hapus");
@@ -432,7 +440,7 @@
                             // Data saved successfully!
                             
                             if(namaFoto != ""){
-                                let storageRef = storage.ref('funwork/'+namaFoto);
+                                let storageRef = storage.ref('funwork/'+dataId);
                                 storageRef.delete().then(function() {
                                     // File deleted successfully
                                     alert('Data berhasil dihapus !');
