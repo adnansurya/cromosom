@@ -59,6 +59,7 @@
                     <th>Nama</th>
                     <th>Keterangan</th>
                     <th>Foto</th>
+                    <th>Tambahan</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -70,10 +71,13 @@
                             <td><%= data.keterangan %></td>
                             <td>
                                 <% if (data.foto !== "") {%>
-                                    <img  alt="<%= data.nama %>" class="img-thumbnail foto-preview" src="https://firebasestorage.googleapis.com/v0/b/cromosom1.appspot.com/o/work%2F<%= data.foto %>?alt=media">
+                                    <img  alt="<%= data.foto %>" class="img-thumbnail foto-preview" src="https://firebasestorage.googleapis.com/v0/b/cromosom1.appspot.com/o/work%2F<%= isi.key %>%2F<%= data.foto %>?alt=media">
                                 <% } else {%>
                                     <p>Tidak Ada Foto</p>
                                 <% } %>
+                            </td>
+                            <td>
+                                <a class="btn btn-success btn-sm" href="#tambahModal" data-toggle="modal" data-action="edit" data-child-id="<%= isi.key %>"><span class="fa fa-plus"></span></a>                                                                    
                             </td>
                             <td>
                                 <a class="btn btn-info btn-sm" href="#dataModal" data-toggle="modal" data-action="edit" data-child-id="<%= isi.key %>">Edit</a>                                                                    
@@ -133,6 +137,44 @@
         </div>
       </div>
   <!-- /#wrapper -->
+
+  <div class="modal" id="tambahModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h4 id="judul" class="modal-title">Modal header</h4>
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            
+        </div>
+        <div class="modal-body">  
+            <div class="form-group">
+                <label for="nama2" class=" form-control-label">Nama</label>
+                <input type="text" id="nama2" placeholder="Masukkan Nama" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="deskripsi" class=" form-control-label">Deskripsi</label>
+                <div class="form-label-group">                            
+                    <textarea class="form-control" style="width:100%" id="deskripsi" rows="5" placeholder="Masukkan Deskripsi"></textarea>
+                </div>
+            </div>                  
+            <div class="form-group">
+                <img id="image-preview2" alt="Foto" class="img-thumbnail foto-preview"/>
+                <br> 
+                <progress value="0" max="100" id="uploader"></progress>
+                <br>
+                <input type="file" accept="image/*" id="gambar2" placeholder="Pilih Foto" onchange="previewImage2();">                        
+            </div>
+           
+        </div>
+        <div class="modal-footer">
+          
+            <button id="konfirmasi2"  type="button" class="btn btn-primary">Konfirmasi</button>
+            <button data-dismiss="modal" type="button" class="btn btn-default">Batal</button>
+          
+        </div>
+      </div>
+    </div>
+  </div>
 
   
   <%- include('admin_script'); -%>
@@ -208,13 +250,14 @@
             konfirmasiBtn.click(function(){
                 if(action == 'add'){
                     nama = namaTxt.val();
+                    namaurl = slugify(nama);
                     keterangan = keteranganTxt.val();
                     if(workImg.val() != ""){
-                        namaFoto = nama + '.' + typeFoto;
+                        namaFoto = namaurl + '.' + typeFoto;
                     }
                     
                    
-                    db.ref('/work').push({
+                    db.ref('/work/'+namaurl).set({
                         nama : nama,
                         keterangan : keterangan,
                         foto : namaFoto
@@ -226,7 +269,7 @@
                             // Data saved successfully!
                             
                             if(workImg.val() != ""){
-                                let storageRef = storage.ref('work/'+namaFoto);
+                                let storageRef = storage.ref('work/'+namaurl+'/' + namaFoto);
                                 let uploadTask = storageRef.put(foto);
 
                                 uploadTask.on('state_changed',
@@ -278,7 +321,7 @@
                             
                             
                             if(workImg.val() != ""){
-                                let storageRef = storage.ref('work/'+namaFoto);
+                                let storageRef = storage.ref('work/'+dataId+'/' + namaFoto);
                                 let uploadTask = storageRef.put(foto);
 
                                 uploadTask.on('state_changed',
@@ -315,7 +358,7 @@
                             // Data saved successfully!
                             
                             if(namaFoto != ""){
-                                let storageRef = storage.ref('work/'+namaFoto);
+                                let storageRef = storage.ref('work/'+dataId+'/' + namaFoto);
                                 storageRef.delete().then(function() {
                                     // File deleted successfully
                                     alert('Data berhasil dihapus !');
@@ -339,6 +382,93 @@
 
        });
 
+
+       $('#tambahModal').on('show.bs.modal', function(e) {
+            let foto, typeFoto;
+            let dataId = $(e.relatedTarget).data('child-id');
+
+            let nama, deskripsi;
+
+            let judulTxt = $(e.currentTarget).find('h4[id="judul"]');    
+            let namaTxt = $(e.currentTarget).find('input[id="nama2"]');
+            let deskripsiTxt = $(e.currentTarget).find('textarea[id="deskripsi"]');        
+            let newImg = $(e.currentTarget).find('input[id="gambar2"]');
+            let imgPreview = $(e.currentTarget).find('img[id="image-preview2"]');
+            let konfirmasiBtn = $(e.currentTarget).find('button[id="konfirmasi2"]');
+           
+            let uploaderProg = $(e.currentTarget).find('progress[id="uploader"]');
+
+            judulTxt.text("Tambah Gambar");
+            
+            
+
+            newImg.change(function(e){
+                
+                foto = e.target.files[0];
+                let filePath = newImg.val(); 
+                typeFoto = filePath.substr(filePath.lastIndexOf('.')+1,filePath.length);
+               
+            });
+
+            
+            konfirmasiBtn.click(function(){
+
+                nama = namaTxt.val();
+                namaurl = slugify(nama);
+                deskripsi = deskripsiTxt.val();
+                    if(newImg.val() != ""){
+                        namaFoto = namaurl + '.' + typeFoto;
+                    }
+                    
+                   
+                    db.ref('/work/'+dataId+'/tambahan/'+namaurl).set({
+                        nama : nama,
+                        deskripsi: deskripsi,
+                        foto : namaFoto
+                    }, function(error) {
+                        if (error) {
+                            // The write failed...
+                           alert('Terjadi Kesalahan !');
+                        } else {
+                            // Data saved successfully!
+                            
+                            // if(newImg.val() != ""){
+                            //     let storageRef = storage.ref('work/'+dataId+'/'+namaurl+'/'+namaFoto);
+                            //     let uploadTask = storageRef.put(foto);
+
+                            //     uploadTask.on('state_changed',
+
+                            //         function progress(snapshot){
+                            //             let percentage = (snapshot.bytesTransferred / snapshot.totalBytes) *100;
+                            //             uploaderProg.val(percentage);
+
+                            //         },
+                            //         function error(err){
+                            //             alert('Terjadi Kesalahan !');
+                            //         },
+
+                            //         function complete(){
+                            //             alert('Data berhasil disimpan !');
+                            //             location.href="/admin_edit_work"
+                            //         }
+                            //     );
+                            // }else{
+                            //     alert('Data berhasil disimpan !');
+                            //         location.href="/admin_edit_work"
+                            // }
+                            
+                            alert('Data berhasil disimpan !');
+                                    location.href="/admin_edit_work";
+                        }
+                        
+                    });
+
+               
+                
+            });
+        });
+       
+
        
 
        function previewImage() {
@@ -348,6 +478,16 @@
 
             oFReader.onload = function(oFREvent) {
             document.getElementById("image-preview").src = oFREvent.target.result;
+            };
+        };
+
+        function previewImage2() {
+            document.getElementById("image-preview2").style.display = "block";
+            var oFReader = new FileReader();
+            oFReader.readAsDataURL(document.getElementById("gambar2").files[0]);
+
+            oFReader.onload = function(oFREvent) {
+            document.getElementById("image-preview2").src = oFREvent.target.result;
             };
         };
   </script>

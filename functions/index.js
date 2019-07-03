@@ -88,7 +88,7 @@ app.get('/workdetail/:id', function(req,res) {
     })
     .then(function(snapshot) {
         footer = snapshot.val();
-        res.render("workdetail", {page : 'Workdetail', footer : footer, workdetail:workdetail});
+        res.render("workdetail", {page : 'Workdetail', footer : footer, workdetail:workdetail, key : req.params.id});
         // res.send(workdetail);
     });
 
