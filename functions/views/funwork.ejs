@@ -50,9 +50,9 @@
                                     <div id="<%= isi.key %>" class="carousel slide" data-ride="carousel">
                                        
                                         <div class="carousel-inner">
-                                            <% for(var i = 0; i < data.foto.length; i++) { var obj = data.foto[i]; if (obj !== undefined){ %>
+                                            <% for(var i in data.foto) { var obj = data.foto[i]; if (obj !== undefined){ %>
                                     
-                                                <div class="carousel-item<% if (i === 0) { %> active <% } %>">
+                                                <div class="carousel-item<% if (i === '0') { %> active <% } %>">
                                                     <img alt="<%= obj %>" class="img-responsive center-block" src="https://firebasestorage.googleapis.com/v0/b/cromosom1.appspot.com/o/funwork%2F<%= isi.key %>%2F<%= obj %>?alt=media">
                                                 </div>
                                                 
