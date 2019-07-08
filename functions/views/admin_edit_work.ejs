@@ -65,7 +65,7 @@
             </thead>
             <tbody>
                     <% dataLoad = JSON.stringify(work); %>                
-                    <%  work.forEach(function(isi) { var data = isi.val(); %>
+                    <%  work.forEach(function(isi) { var data = isi.val(); var extra = data.tambahan %>
                         <tr>                                                            
                             <td><%= data.nama %></td>
                             <td><%= data.keterangan %></td>
@@ -78,6 +78,17 @@
                             </td>
                             <td>
                                 <a class="btn btn-success btn-sm" href="#tambahModal" data-toggle="modal" data-action="edit" data-child-id="<%= isi.key %>"><span class="fa fa-plus"></span></a>                                                                    
+                                <br> <br>                       
+                                <% console.log(extra) %>
+                                <% Object.keys(extra).forEach(function(key) { var val = extra[key];%>
+                                   
+                                    <% if (val.foto !== "") {%>
+                                        <img  alt="<%= val.foto %>" class="img-thumbnail foto-preview" src="https://firebasestorage.googleapis.com/v0/b/cromosom1.appspot.com/o/work%2F<%= isi.key %>%2F<%= val.foto %>?alt=media">
+                                        <br>
+                                    <% } else {%>
+                                        <p>Tidak Ada Foto</p>
+                                    <% } %>
+                                <%});%>
                             </td>
                             <td>
                                 <a class="btn btn-info btn-sm" href="#dataModal" data-toggle="modal" data-action="edit" data-child-id="<%= isi.key %>">Edit</a>                                                                    
@@ -253,7 +264,7 @@
                     namaurl = slugify(nama);
                     keterangan = keteranganTxt.val();
                     if(workImg.val() != ""){
-                        namaFoto = namaurl + '.' + typeFoto;
+                        namaFoto = 'cover.' + typeFoto;
                     }
                     
                    
@@ -421,8 +432,7 @@
                     }
                     
                    
-                    db.ref('/work/'+dataId+'/tambahan/'+namaurl).set({
-                        nama : nama,
+                    db.ref('/work/'+dataId+'/tambahan/'+namaurl).set({                    
                         deskripsi: deskripsi,
                         foto : namaFoto
                     }, function(error) {
@@ -430,32 +440,32 @@
                             // The write failed...
                            alert('Terjadi Kesalahan !');
                         } else {
-                            // Data saved successfully!
+                           // Data saved successfully!
                             
-                            // if(newImg.val() != ""){
-                            //     let storageRef = storage.ref('work/'+dataId+'/'+namaurl+'/'+namaFoto);
-                            //     let uploadTask = storageRef.put(foto);
+                            if(newImg.val() != ""){
+                                let storageRef = storage.ref('work/'+dataId+'/'+namaFoto);
+                                let uploadTask = storageRef.put(foto);
 
-                            //     uploadTask.on('state_changed',
+                                uploadTask.on('state_changed',
 
-                            //         function progress(snapshot){
-                            //             let percentage = (snapshot.bytesTransferred / snapshot.totalBytes) *100;
-                            //             uploaderProg.val(percentage);
+                                    function progress(snapshot){
+                                        let percentage = (snapshot.bytesTransferred / snapshot.totalBytes) *100;
+                                        uploaderProg.val(percentage);
 
-                            //         },
-                            //         function error(err){
-                            //             alert('Terjadi Kesalahan !');
-                            //         },
+                                    },
+                                    function error(err){
+                                        alert('Terjadi Kesalahan !');
+                                    },
 
-                            //         function complete(){
-                            //             alert('Data berhasil disimpan !');
-                            //             location.href="/admin_edit_work"
-                            //         }
-                            //     );
-                            // }else{
-                            //     alert('Data berhasil disimpan !');
-                            //         location.href="/admin_edit_work"
-                            // }
+                                    function complete(){
+                                        alert('Data berhasil disimpan !');
+                                        location.href="/admin_edit_work"
+                                    }
+                                );
+                            }else{
+                                alert('Data berhasil disimpan !');
+                                    location.href="/admin_edit_work"
+                            }
                             
                             alert('Data berhasil disimpan !');
                                     location.href="/admin_edit_work";
