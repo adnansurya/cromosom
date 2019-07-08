@@ -65,7 +65,7 @@
             </thead>
             <tbody>
                     <% dataLoad = JSON.stringify(work); %>                
-                    <%  work.forEach(function(isi) { var data = isi.val(); var extra = data.tambahan %>
+                    <%  work.forEach(function(isi) { var data = isi.val();var extra = data.tambahan;   %>
                         <tr>                                                            
                             <td><%= data.nama %></td>
                             <td><%= data.keterangan %></td>
@@ -78,17 +78,20 @@
                             </td>
                             <td>
                                 <a class="btn btn-success btn-sm" href="#tambahModal" data-toggle="modal" data-action="edit" data-child-id="<%= isi.key %>"><span class="fa fa-plus"></span></a>                                                                    
-                                <br> <br>                       
-                                <% console.log(extra) %>
-                                <% Object.keys(extra).forEach(function(key) { var val = extra[key];%>
-                                   
-                                    <% if (val.foto !== "") {%>
-                                        <img  alt="<%= val.foto %>" class="img-thumbnail foto-preview" src="https://firebasestorage.googleapis.com/v0/b/cromosom1.appspot.com/o/work%2F<%= isi.key %>%2F<%= val.foto %>?alt=media">
-                                        <br>
-                                    <% } else {%>
-                                        <p>Tidak Ada Foto</p>
-                                    <% } %>
-                                <%});%>
+                                <% if (extra) {%>
+                                <br> <br>  
+                                                     
+                                    <% console.log(extra); %>
+                                    <% Object.keys(extra).forEach(function(key) { var val = extra[key];%>
+                                    
+                                        <% if (val.foto !== "") {%>
+                                            <img  alt="<%= val.foto %>" class="img-thumbnail foto-preview" src="https://firebasestorage.googleapis.com/v0/b/cromosom1.appspot.com/o/work%2F<%= isi.key %>%2F<%= val.foto %>?alt=media">
+                                            <br>
+                                        <% } else {%>
+                                            <p>Tidak Ada Foto</p>
+                                        <% } %>
+                                    <%});%>
+                                <% } %>
                             </td>
                             <td>
                                 <a class="btn btn-info btn-sm" href="#dataModal" data-toggle="modal" data-action="edit" data-child-id="<%= isi.key %>">Edit</a>                                                                    
@@ -314,12 +317,13 @@
 
                 }else if(action == 'edit'){
                     nama = namaTxt.val();
-                    keterangan = keteranganTxt.val();                                
+                    namaurl = slugify(nama);
+                    keterangan = keteranganTxt.val();
                     if(workImg.val() != ""){
-                        namaFoto = nama + '.' + typeFoto;
+                        namaFoto = 'cover.' + typeFoto;
                     }
                        
-                    db.ref('/work/' + dataId).set({
+                    db.ref('/work/' + dataId).update({
                     nama : nama,
                     keterangan : keterangan,
                     foto : namaFoto
@@ -368,8 +372,8 @@
                         } else {
                             // Data saved successfully!
                             
-                            if(namaFoto != ""){
-                                let storageRef = storage.ref('work/'+dataId+'/' + namaFoto);
+                            
+                                let storageRef = storage.ref().child('work/'+dataId) + '/' +namaFoto;
                                 storageRef.delete().then(function() {
                                     // File deleted successfully
                                     alert('Data berhasil dihapus !');
@@ -378,10 +382,7 @@
                                     alert('Terjadi Kesalahan !');
                                 });
 
-                            }else{
-                                alert('Data berhasil dihapus !');
-                                location.href="/admin_edit_work";
-                            }
+                            
                         
                         }
                         
