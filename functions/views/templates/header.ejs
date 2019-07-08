@@ -1,7 +1,7 @@
 <!-- Header Section -->
 <header id="navbar" class="container-fluid" style="transition: .5s ease;">
     <div class="logo site-heading text-center d-none d-lg-block">
-        <a href="/"><img id="logo" style="max-width: 300px;" class="ml-5 site-logo pt-3" src="<% if (page === 'Workdetail') { %>../<% } %>img/logo.png" ></a>
+        <a href="/"><img id="logo" style="max-width: 300px;" class="ml-3 site-logo pt-3" src="<% if (page === 'Workdetail') { %>../<% } %>img/logo.png" ></a>
     </div>
         
     <nav  class="navbar navbar-expand-lg navbar-light bg-white container">
@@ -52,6 +52,8 @@
         menu.classList.add("ml-auto");
         menu.classList.remove("navbar-center");
         logo.setAttribute("style", "max-width :150px; margin-top:15px");
+        logo.classList.remove("ml-3");
+        logo.classList.add("ml-5");
        
        
         
@@ -63,6 +65,9 @@
         navbar.classList.add("mt-3")
         logo.setAttribute("style", "max-width :300px;");
        // navbar.setAttribute("style", " transition: .5s ease;");
+       logo.classList.remove("ml-5");
+        logo.classList.add("ml-3");
+       
        
       
       }
