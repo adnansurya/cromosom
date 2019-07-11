@@ -126,7 +126,7 @@
                     <br> 
                     <progress value="0" max="100" id="uploader"></progress>
                     <br>
-                    
+                    <p>*Pilih Satu atau Beberapa Foto</p>
                     <input type="file" accept="image/*" multiple id="gambar">
                        
                 </div>
@@ -153,11 +153,12 @@
                 </div>
                 <div class="modal-body">                    
                     <div class="form-group">
+                        
                         <img id="image-preview" alt="Foto" class="img-thumbnail foto-preview"/>
                         <br> 
                         <progress value="0" max="100" id="uploader"></progress>
                         <br>
-                        <input type="file" accept="image/*" id="gambarPrev" placeholder="Pilih Foto" onchange="previewImage();">                        
+                        <input type="file" accept="image/*" id="gambarPrev" placeholder="Pilih Beberapa Foto" onchange="previewImage();">                        
                     </div>
                     <button id="hapusImg"  type="button" class="btn btn-danger">Hapus Gambar</button>
                 </div>
@@ -303,6 +304,8 @@
                 namaTxt.prop('disabled', false);
                 keteranganTxt.prop('disabled', false);
                 funworkImg.prop('disabled', false);
+                funworkImg.val("");
+                $('.gallery').html('');
             }else if(action == 'edit'){
                 judulTxt.text("Edit Funwork");
                 konfirmasiBtn.text("Update");
@@ -381,8 +384,11 @@
 
                                     function complete(){                                                                        
                                         if(i == filesAmount){
-                                            alert('Data berhasil disimpan !');
-                                            location.href="/admin_edit_funwork"
+                                            console.log('Data berhasil disimpan !');
+                                            setTimeout(function(){
+                                                location.href="/admin_edit_funwork"
+                                            },2000);
+                                            
                                         }
                                         
                                         
@@ -432,31 +438,37 @@
                     }); 
                     
                 }else if(action == 'delete'){
-                    db.ref('/funwork/' + dataId).remove(function(error){
-                        if (error) {
-                            // The write failed...
-                        alert('Terjadi Kesalahan !');
-                        } else {
-                            // Data saved successfully!
-                            
-                            if(namaFoto != ""){
-                                let storageRef = storage.ref('funwork/'+dataId);
+                    db.ref('/funwork/' + dataId).once('value')
+                    .then(function(snapshot) {
+                        let data = snapshot.val();
+                        // console.log(data);
+                        if(data.foto != null || data.foto != undefined || data.foto != ""){
+                            for(var i in data.foto){
+                                // console.log("isi : " + data.foto[i]);
+                                let storageRef = storage.ref('funwork/'+dataId+'/'+data.foto[i]);
                                 storageRef.delete().then(function() {
-                                    // File deleted successfully
-                                    alert('Data berhasil dihapus !');
-                                    location.href="/admin_edit_funwork";
+
+                                    console.log('Data berhasil dihapus !');                                    
                                 }).catch(function(error) {
                                     alert('Terjadi Kesalahan !');
                                 });
-
-                            }else{
-                                alert('Data berhasil dihapus !');
-                                location.href="/admin_edit_funwork";
+                                
                             }
-                        
+
                         }
+                       
+                        return db.ref('/funwork/' + dataId).remove();
+                    }).then(function(error){
+                        if(error){
+                            alert('terjadi kesalahan');
+                        }else{
+                            location.href='/admin_edit_funwork';
+                        }
+                       
                         
-                    });
+                        
+                    });       
+                                       
                 }
                 
             });
