@@ -1,10 +1,24 @@
 const functions = require('firebase-functions');
 //include library expressjs setelah install di folder functions : npm i --save firebase-functions
 const express = require('express');
-const admin = require('firebase-admin');
-admin.initializeApp(functions.config().firebase);
+
+var admin = require("firebase-admin");
+
+var refreshToken;
+// var serviceAccount = require("/Documents/Project/cromosom/functions/abc.json");
+
+admin.initializeApp({
+    credential: admin.credential.applicationDefault(),
+
+
+    databaseURL: "https://cromosom1.firebaseio.com/"
+});
+
+// const admin = require('firebase-admin');
+// admin.initializeApp(functions.config().firebase);
 const db = admin.database();
 const app = express();
+
 
 
 
