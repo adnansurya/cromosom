@@ -85,7 +85,7 @@
                                     <% Object.keys(extra).forEach(function(key) { var val = extra[key];%>
                                     
                                         <% if (val.foto !== "") {%>
-                                            <img  alt="<%= val.foto %>" class="img-thumbnail foto-preview" src="https://firebasestorage.googleapis.com/v0/b/cromosom1.appspot.com/o/work%2F<%= isi.key %>%2F<%= val.foto %>?alt=media">
+                                            <img  alt="<%= val.foto %>" href="#dataModal" data-toggle="modal" data-child-id="<%= isi.key %>" class="img-thumbnail foto-preview" src="https://firebasestorage.googleapis.com/v0/b/cromosom1.appspot.com/o/work%2F<%= isi.key %>%2F<%= val.foto %>?alt=media">
                                             <br>
                                         <% } else {%>
                                             <p>Tidak Ada Foto</p>
@@ -183,6 +183,44 @@
         <div class="modal-footer">
           
             <button id="konfirmasi2"  type="button" class="btn btn-primary">Konfirmasi</button>
+            <button data-dismiss="modal" type="button" class="btn btn-default">Batal</button>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="editModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h4 id="judul2" class="modal-title">Modal header</h4>
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            
+        </div>
+        <div class="modal-body">  
+            <div class="form-group">
+                <label for="nama3" class=" form-control-label">Nama</label>
+                <input type="text" id="nama3" placeholder="Masukkan Nama" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="deskripsi" class=" form-control-label">Deskripsi</label>
+                <div class="form-label-group">                            
+                    <textarea class="form-control" style="width:100%" id="deskripsi2" rows="5" placeholder="Masukkan Deskripsi"></textarea>
+                </div>
+            </div>                  
+            <div class="form-group">
+                <img id="image-preview3" alt="Foto" class="img-thumbnail foto-preview"/>
+                <br> 
+                <progress class="myuploader" value="0" max="100" id="uploader3"></progress>
+                <br>
+                <input type="file" accept="image/*" id="gambar3" placeholder="Pilih Foto" onchange="previewImage2();">                        
+            </div>
+           
+        </div>
+        <div class="modal-footer">
+          
+            <button id="konfirmasi3"  type="button" class="btn btn-primary">Konfirmasi</button>
             <button data-dismiss="modal" type="button" class="btn btn-default">Batal</button>
           
         </div>
@@ -491,6 +529,89 @@
                 
             });
         });
+
+        $('#editModal').on('show.bs.modal', function(e) {
+            let foto, typeFoto;
+            let dataId = $(e.relatedTarget).data('child-id');
+
+            let nama, deskripsi;
+
+            let judulTxt = $(e.currentTarget).find('h4[id="judul2"]');    
+            let namaTxt = $(e.currentTarget).find('input[id="nama3"]');
+            let deskripsiTxt = $(e.currentTarget).find('textarea[id="deskripsi2"]');        
+            let newImg = $(e.currentTarget).find('input[id="gambar3"]');
+            let imgPreview = $(e.currentTarget).find('img[id="image-preview3"]');
+            let konfirmasiBtn = $(e.currentTarget).find('button[id="konfirmasi3"]');
+           
+            let uploaderProg = $(e.currentTarget).find('progress[id="uploader3"]');
+
+            judulTxt.text("Edit Gambar");
+            
+            
+
+            newImg.change(function(e){
+                
+                foto = e.target.files[0];
+                let filePath = newImg.val(); 
+                typeFoto = filePath.substr(filePath.lastIndexOf('.')+1,filePath.length);
+               
+            });
+
+            
+            konfirmasiBtn.click(function(){
+
+                nama = namaTxt.val();
+                namaurl = slugify(nama);
+                deskripsi = deskripsiTxt.val();
+                    if(newImg.val() != ""){
+                        namaFoto = namaurl + '.' + typeFoto;
+                    }
+                    
+                   
+                    db.ref('/work/'+dataId+'/tambahan/'+namaurl).set({                    
+                        deskripsi: deskripsi,
+                        foto : namaFoto
+                    }, function(error) {
+                        if (error) {
+                            // The write failed...
+                           alert('Terjadi Kesalahan !');
+                        } else {
+                           // Data saved successfully!
+                            
+                            if(newImg.val() != ""){
+                                let storageRef = storage.ref('work/'+dataId+'/'+namaFoto);
+                                let uploadTask = storageRef.put(foto);
+
+                                uploadTask.on('state_changed',
+
+                                    function progress(snapshot){
+                                        let percentage = (snapshot.bytesTransferred / snapshot.totalBytes) *100;
+                                        uploaderProg.val(percentage);
+
+                                    },
+                                    function error(err){
+                                        alert('Terjadi Kesalahan !');
+                                    },
+
+                                    function complete(){
+                                        alert('Data berhasil disimpan !');
+                                        location.href="/admin_edit_work"
+                                    }
+                                );
+                            }else{
+                                alert('Data berhasil disimpan !');
+                                    location.href="/admin_edit_work"
+                            }
+                            
+                           
+                        }
+                        
+                    });
+
+               
+                
+            });
+        });
        
 
        
@@ -512,6 +633,15 @@
 
             oFReader.onload = function(oFREvent) {
             document.getElementById("image-preview2").src = oFREvent.target.result;
+            };
+        };
+        function previewImage3() {
+            document.getElementById("image-preview3").style.display = "block";
+            var oFReader = new FileReader();
+            oFReader.readAsDataURL(document.getElementById("gambar3").files[0]);
+
+            oFReader.onload = function(oFREvent) {
+            document.getElementById("image-preview3").src = oFREvent.target.result;
             };
         };
   </script>
