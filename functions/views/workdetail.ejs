@@ -26,7 +26,9 @@
                             <p><%= workdetail.keterangan %></p>
                         </div>
                     </div>
-                    <% var extra = workdetail.tambahan; console.log(extra) %>
+                    <% if(extra){ %>
+                    <% var extra = workdetail.tambahan; console.log(extra); %>
+                    
                     <% Object.keys(extra).forEach(function(key_) { var val = extra[key_];%>
                         <div class="row pt-5">
                             <div class="col-md-8">
@@ -43,6 +45,7 @@
                             </div>
                         </div>
                     <%});%>
+                    <% } %>
     
                    
                 </div>
