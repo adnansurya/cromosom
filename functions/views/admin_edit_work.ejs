@@ -13,7 +13,7 @@
         max-height: 150px;
     }
 
-    #uploader{
+    .myuploader{
         -webkit-appearance: none;
         appearance: none;
         width: 100%;
@@ -133,7 +133,7 @@
                 <div class="form-group">
                     <img id="image-preview" alt="Foto" class="img-thumbnail foto-preview"/>
                     <br> 
-                    <progress value="0" max="100" id="uploader"></progress>
+                    <progress class="myuploader "value="0" max="100" id="uploader"></progress>
                     <br>
                     <input type="file" accept="image/*" id="gambar" placeholder="Pilih Foto" onchange="previewImage();">
                 </div>
@@ -174,7 +174,7 @@
             <div class="form-group">
                 <img id="image-preview2" alt="Foto" class="img-thumbnail foto-preview"/>
                 <br> 
-                <progress value="0" max="100" id="uploader"></progress>
+                <progress class="myuploader" value="0" max="100" id="uploader2"></progress>
                 <br>
                 <input type="file" accept="image/*" id="gambar2" placeholder="Pilih Foto" onchange="previewImage2();">                        
             </div>
@@ -365,28 +365,35 @@
                     }); 
                     
                 }else if(action == 'delete'){
-                    db.ref('/work/' + dataId).remove(function(error){
-                        if (error) {
-                            // The write failed...
-                        alert('Terjadi Kesalahan !');
-                        } else {
-                            // Data saved successfully!
-                            
-                            
-                                let storageRef = storage.ref().child('work/'+dataId) + '/' +namaFoto;
+                    db.ref('/work/' + dataId).once('value')
+                    .then(function(snapshot) {
+                        let data = snapshot.val();
+                        console.log(data);
+                        if(data.tambahan != null || data.tambahan != undefined){
+                            for(var i in data.tambahan){
+                                console.log("isi : " + data.tambahan[i].foto);
+                                let storageRef = storage.ref('work'+dataId+'/'+data.tambahan[i].foto);
                                 storageRef.delete().then(function() {
-                                    // File deleted successfully
-                                    alert('Data berhasil dihapus !');
-                                    location.href="/admin_edit_work";
+
+                                    console.log('Data berhasil dihapus !');                                    
                                 }).catch(function(error) {
                                     alert('Terjadi Kesalahan !');
                                 });
+                                
+                            }
 
-                            
-                        
                         }
+                        return db.ref('/work/' + dataId).remove();
+                    }).then(function(error){
+                        if(error){
+                            alert('terjadi kesalahan');
+                        }else{
+                            location.href='/admin_edit_work';
+                        }
+                       
                         
-                    });
+                        
+                    });                    
                 }
                 
             });
@@ -408,7 +415,7 @@
             let imgPreview = $(e.currentTarget).find('img[id="image-preview2"]');
             let konfirmasiBtn = $(e.currentTarget).find('button[id="konfirmasi2"]');
            
-            let uploaderProg = $(e.currentTarget).find('progress[id="uploader"]');
+            let uploaderProg = $(e.currentTarget).find('progress[id="uploader2"]');
 
             judulTxt.text("Tambah Gambar");
             
@@ -468,8 +475,7 @@
                                     location.href="/admin_edit_work"
                             }
                             
-                            alert('Data berhasil disimpan !');
-                                    location.href="/admin_edit_work";
+                           
                         }
                         
                     });
