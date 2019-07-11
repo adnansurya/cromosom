@@ -85,7 +85,7 @@
                                     <% Object.keys(extra).forEach(function(key) { var val = extra[key];%>
                                     
                                         <% if (val.foto !== "") {%>
-                                            <img  alt="<%= val.foto %>" href="#dataModal" data-toggle="modal" data-child-id="<%= isi.key %>" class="img-thumbnail foto-preview" src="https://firebasestorage.googleapis.com/v0/b/cromosom1.appspot.com/o/work%2F<%= isi.key %>%2F<%= val.foto %>?alt=media">
+                                            <img  alt="<%= val.foto %>" href="#editModal" data-toggle="modal" data-child-id="<%= isi.key %>" data-tambahan-id="<%= key %>" class="img-thumbnail foto-preview" src="https://firebasestorage.googleapis.com/v0/b/cromosom1.appspot.com/o/work%2F<%= isi.key %>%2F<%= val.foto %>?alt=media">
                                             <br>
                                         <% } else {%>
                                             <p>Tidak Ada Foto</p>
@@ -162,8 +162,8 @@
         </div>
         <div class="modal-body">  
             <div class="form-group">
-                <label for="nama2" class=" form-control-label">Nama</label>
-                <input type="text" id="nama2" placeholder="Masukkan Nama" class="form-control">
+                <label for="nama2" class=" form-control-label">Nickname</label>
+                <input type="text" id="nama2" placeholder="Masukkan Nickname Unik Gambar" class="form-control">
             </div>
             <div class="form-group">
                 <label for="deskripsi" class=" form-control-label">Deskripsi</label>
@@ -198,11 +198,7 @@
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
             
         </div>
-        <div class="modal-body">  
-            <div class="form-group">
-                <label for="nama3" class=" form-control-label">Nama</label>
-                <input type="text" id="nama3" placeholder="Masukkan Nama" class="form-control">
-            </div>
+        <div class="modal-body">              
             <div class="form-group">
                 <label for="deskripsi" class=" form-control-label">Deskripsi</label>
                 <div class="form-label-group">                            
@@ -214,7 +210,7 @@
                 <br> 
                 <progress class="myuploader" value="0" max="100" id="uploader3"></progress>
                 <br>
-                <input type="file" accept="image/*" id="gambar3" placeholder="Pilih Foto" onchange="previewImage2();">                        
+                <input type="file" accept="image/*" id="gambar3" placeholder="Pilih Foto" onchange="previewImage3();">                        
             </div>
            
         </div>
@@ -248,6 +244,10 @@
                 nama = dataObj[dataId].nama;
                 keterangan = dataObj[dataId].keterangan;
                 namaFoto = dataObj[dataId].foto;
+            }else if(action == 'delete'){
+                nama = "";
+                keterangan = "";
+                namaFoto = "";
             }
                                 
             let judulTxt = $(e.currentTarget).find('h4[id="judul"]');            
@@ -533,11 +533,11 @@
         $('#editModal').on('show.bs.modal', function(e) {
             let foto, typeFoto;
             let dataId = $(e.relatedTarget).data('child-id');
+            let tambahanId = $(e.relatedTarget).data('tambahan-id');
 
             let nama, deskripsi;
 
-            let judulTxt = $(e.currentTarget).find('h4[id="judul2"]');    
-            let namaTxt = $(e.currentTarget).find('input[id="nama3"]');
+            let judulTxt = $(e.currentTarget).find('h4[id="judul2"]');               
             let deskripsiTxt = $(e.currentTarget).find('textarea[id="deskripsi2"]');        
             let newImg = $(e.currentTarget).find('input[id="gambar3"]');
             let imgPreview = $(e.currentTarget).find('img[id="image-preview3"]');
@@ -546,8 +546,15 @@
             let uploaderProg = $(e.currentTarget).find('progress[id="uploader3"]');
 
             judulTxt.text("Edit Gambar");
+
+            dataObj = <%-dataLoad%>;         
+            deskripsi = dataObj[dataId].tambahan[tambahanId].deskripsi;
+            namaFoto = dataObj[dataId].tambahan[tambahanId].foto;
             
+            console.log(deskripsi);
             
+            deskripsiTxt.text(deskripsi);
+            newImg.val("");
 
             newImg.change(function(e){
                 
@@ -559,54 +566,47 @@
 
             
             konfirmasiBtn.click(function(){
-
-                nama = namaTxt.val();
-                namaurl = slugify(nama);
+               
                 deskripsi = deskripsiTxt.val();
-                    if(newImg.val() != ""){
-                        namaFoto = namaurl + '.' + typeFoto;
-                    }
-                    
-                   
-                    db.ref('/work/'+dataId+'/tambahan/'+namaurl).set({                    
-                        deskripsi: deskripsi,
-                        foto : namaFoto
-                    }, function(error) {
-                        if (error) {
-                            // The write failed...
-                           alert('Terjadi Kesalahan !');
-                        } else {
-                           // Data saved successfully!
-                            
-                            if(newImg.val() != ""){
-                                let storageRef = storage.ref('work/'+dataId+'/'+namaFoto);
-                                let uploadTask = storageRef.put(foto);
+                                                           
+                db.ref('/work/'+dataId+'/tambahan/'+tambahanId).update({                    
+                    deskripsi: deskripsi,                        
+                }, function(error) {
+                    if (error) {
+                        // The write failed...
+                        alert('Terjadi Kesalahan !');
+                    } else {
+                        // Data saved successfully!
+                        
+                        if(newImg.val() != ""){
+                            let storageRef = storage.ref('work/'+dataId+'/'+namaFoto);
+                            let uploadTask = storageRef.put(foto);
 
-                                uploadTask.on('state_changed',
+                            uploadTask.on('state_changed',
 
-                                    function progress(snapshot){
-                                        let percentage = (snapshot.bytesTransferred / snapshot.totalBytes) *100;
-                                        uploaderProg.val(percentage);
+                                function progress(snapshot){
+                                    let percentage = (snapshot.bytesTransferred / snapshot.totalBytes) *100;
+                                    uploaderProg.val(percentage);
 
-                                    },
-                                    function error(err){
-                                        alert('Terjadi Kesalahan !');
-                                    },
+                                },
+                                function error(err){
+                                    alert('Terjadi Kesalahan !');
+                                },
 
-                                    function complete(){
-                                        alert('Data berhasil disimpan !');
-                                        location.href="/admin_edit_work"
-                                    }
-                                );
-                            }else{
-                                alert('Data berhasil disimpan !');
+                                function complete(){
+                                    alert('Data berhasil disimpan !');
                                     location.href="/admin_edit_work"
-                            }
-                            
-                           
+                                }
+                            );
+                        }else{
+                            alert('Data berhasil disimpan !');
+                                location.href="/admin_edit_work"
                         }
                         
-                    });
+                        
+                    }
+                    
+                });
 
                
                 
