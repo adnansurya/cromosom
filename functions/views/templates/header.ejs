@@ -1,7 +1,7 @@
 <!-- Header Section -->
-<header id="navbar" class="container-fluid" style="transition: .5s ease;">
-    <div class="logo site-heading text-center d-none d-lg-block">
-        <a href="/"><img id="logo" style="max-width: 300px;" class="ml-3 site-logo pt-3" src="<% if (page === 'Workdetail') { %>../<% } %>img/logo.png" ></a>
+<header id="navbar" class="container-fluid">
+    <div class="site-heading text-center d-none d-lg-block">
+        <a href="/"><img id="logo" class="logo"  class="ml-3 site-logo pt-3" src="<% if (page === 'Workdetail') { %>../<% } %>img/logo.png" ></a>
     </div>
         
     <nav  class="navbar navbar-expand-lg navbar-light bg-white container">
@@ -32,45 +32,71 @@
 
 
 <script>
-    window.onscroll = function() {myFunction()};
+
     
-    var navbar = document.getElementById("navbar");
+   // This function will run a throttled script every 300 ms
+var checkHeader = _.throttle(() => { 
+    
+
+    // Detect scroll position
+    let scrollPosition = Math.round(window.scrollY);
     var menu = document.getElementById("menu");
-    var logo = document.getElementById("logo");
-    var sticky = navbar.offsetTop;
-    logo.classList.add("mt-3")
+
+    // If we've scrolled 100px, add "sticky" class to the header
+    if (scrollPosition > 220){
+        document.querySelector('header').classList.add('sticky');
+        menu.classList.add("ml-auto");
+        menu.classList.remove("navbar-center");
+    }
+    // If not, remove "sticky" class from header
+    else {
+        document.querySelector('header').classList.remove('sticky');
+        menu.classList.add("navbar-center")
+        menu.classList.remove("ml-auto");
+    }
+}, 300);
+
+// Run the checkHeader function every time you scroll
+window.addEventListener('scroll', checkHeader);
+    // window.onscroll = function() {myFunction()};
+    
+    // var navbar = document.getElementById("navbar");
+    // var menu = document.getElementById("menu");
+    // var logo = document.getElementById("logo");
+    // var sticky = navbar.offsetTop;
+    // logo.classList.add("mt-3")
   
     
     
-    function myFunction() {
-        logo.classList.remove("mt-3") ;  
-        //console.log("position : " + window.pageYOffset);
+    // function myFunction() {
+    //     logo.classList.remove("mt-3") ;  
+    //     //console.log("position : " + window.pageYOffset);
         
-      if (window.pageYOffset > sticky + 220) {
-        navbar.classList.add("sticky")
-        navbar.classList.remove("mt-3")             
-        menu.classList.add("ml-auto");
-        menu.classList.remove("navbar-center");
-        logo.setAttribute("style", "max-width :150px; margin-top:15px");
-        logo.classList.remove("ml-3");
-        logo.classList.add("ml-5");
+    //   if (window.pageYOffset > sticky + 220) {
+    //     navbar.classList.add("sticky")
+    //     navbar.classList.remove("mt-3")             
+    //     menu.classList.add("ml-auto");
+    //     menu.classList.remove("navbar-center");
+    //     logo.setAttribute("style", "max-width :150px; margin-top:15px");
+    //     logo.classList.remove("ml-3");
+    //     logo.classList.add("ml-5");
        
        
         
         
-      } else {
-        navbar.classList.remove("sticky");
-        menu.classList.remove("ml-auto");
-        menu.classList.add("navbar-center")
-        navbar.classList.add("mt-3")
-        logo.setAttribute("style", "max-width :300px;");
-       // navbar.setAttribute("style", " transition: .5s ease;");
-       logo.classList.remove("ml-5");
-        logo.classList.add("ml-3");
+    //   } else {
+    //     navbar.classList.remove("sticky");
+    //     menu.classList.remove("ml-auto");
+    //     menu.classList.add("navbar-center")
+    //     navbar.classList.add("mt-3")
+    //     logo.setAttribute("style", "max-width :300px;");
+    //    // navbar.setAttribute("style", " transition: .5s ease;");
+    //    logo.classList.remove("ml-5");
+    //     logo.classList.add("ml-3");
        
        
       
-      }
-    }
+    //   }
+    // }
 
     </script>
