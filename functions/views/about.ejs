@@ -26,7 +26,8 @@
                         <%  team.forEach(function(isi) { var data = isi.val(); %>
                             <div class="mrg col-5">    
                                 <img  alt="<%= data.nama %>" class="rounded-circle px-1 img-fluid img-responsive" style="overflow: hidden;" src="https://firebasestorage.googleapis.com/v0/b/cromosom1.appspot.com/o/foto%2F<%= data.foto %>?alt=media">
-                                <div class="caption"><span><%= data.nama %></span></div>
+                                <div class="caption"><span><strong><%= data.nama %></strong></span></div>
+                                <div class="caption"><span><%= data.keterangan %></span></div>
                             </div>
                         <%  }); %>         
                         
