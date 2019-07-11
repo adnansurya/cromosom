@@ -26,7 +26,7 @@
                             <p><%= workdetail.keterangan %></p>
                         </div>
                     </div>
-                    <% if(extra){ %>
+                    <% if(workdetail.tambahan != null || workdetail.tambahan != undefined){ %>
                     <% var extra = workdetail.tambahan; console.log(extra); %>
                     
                     <% Object.keys(extra).forEach(function(key_) { var val = extra[key_];%>
