@@ -372,7 +372,7 @@
                         if(data.tambahan != null || data.tambahan != undefined){
                             for(var i in data.tambahan){
                                 console.log("isi : " + data.tambahan[i].foto);
-                                let storageRef = storage.ref('work'+dataId+'/'+data.tambahan[i].foto);
+                                let storageRef = storage.ref('work/'+dataId+'/'+data.tambahan[i].foto);
                                 storageRef.delete().then(function() {
 
                                     console.log('Data berhasil dihapus !');                                    
@@ -383,6 +383,13 @@
                             }
 
                         }
+                        let storageRef = storage.ref('work/'+dataId+'/'+namaFoto);
+                            storageRef.delete().then(function() {
+
+                                console.log('Data berhasil dihapus !');                                    
+                            }).catch(function(error) {
+                                alert('Terjadi Kesalahan !');
+                        });
                         return db.ref('/work/' + dataId).remove();
                     }).then(function(error){
                         if(error){
