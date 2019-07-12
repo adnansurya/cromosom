@@ -2494,16 +2494,16 @@ figure.effect-zoe:hover p.icon-links a:first-child {
   header {
     position: fixed;
     top: 0px;
-    padding: 30px 20px;
+    padding: 20px 20px;
     -webkit-transition: padding 400ms ease;
     transition: padding 400ms ease;
   }
 
   section.content {
-    margin-top: 200px;
+    margin-top: 80px;
   }
   header.sticky {
-    padding: 10px 20px;
+    padding: 0px 20px;
   }  
   /* .sticky {
     position: fixed;
@@ -2515,11 +2515,11 @@ figure.effect-zoe:hover p.icon-links a:first-child {
   .logo{
     width: 250px;
     height: auto;
-    webkit-transition:all 400ms linear;
+    /* webkit-transition:all 400ms linear;
     -moz-transition:all 400ms linear;
     -o-transition:all 400ms linear;
     -ms-transition:all 400ms linear;    
-    transition:all 400ms linear;
+    transition:all 400ms linear; */
    
   }  
    .sticky .logo {
@@ -2531,20 +2531,25 @@ figure.effect-zoe:hover p.icon-links a:first-child {
     padding: 30px;
     background-color: #FFF;
     
-    margin-top: 10px;
+    margin-top: 0px;
     margin-left: 10px;
     
     
   }
-  @keyframes move {
+  /* @keyframes move {
     0%{
       top:0; left:0;
     }
     100% {
       transform:  translate(20px, 20px);
     }
-  }
+  } */
   
+  @media only screen and (min-width: 992px) {
+    section.content {
+      margin-top: 160px;
+    }
+  }
   
   .logoimg{
       max-width: 300px;
