@@ -2494,7 +2494,7 @@ figure.effect-zoe:hover p.icon-links a:first-child {
   header {
     position: fixed;
     top: 0px;
-    padding: 20px 20px;
+    padding: 30px 20px;
     -webkit-transition: padding 400ms ease;
     transition: padding 400ms ease;
   }
@@ -2503,7 +2503,7 @@ figure.effect-zoe:hover p.icon-links a:first-child {
     margin-top: 80px;
   }
   header.sticky {
-    padding: 0px 20px;
+    padding: 0px 20px 0px 20px; 
   }  
   /* .sticky {
     position: fixed;
@@ -2528,10 +2528,10 @@ figure.effect-zoe:hover p.icon-links a:first-child {
     left : 0;
     
     
-    padding: 30px;
+    padding: 20px;
     background-color: #FFF;
     
-    margin-top: 0px;
+    margin-top: 10px;
     margin-left: 10px;
     
     
