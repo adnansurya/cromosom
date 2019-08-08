@@ -2505,7 +2505,6 @@ figure.effect-zoe:hover p.icon-links a:first-child {
   }
   header.sticky {
     padding: 0px 20px 0px 20px; 
-    height: 70px;
   }  
   /* .sticky {
     position: fixed;
@@ -2528,6 +2527,7 @@ figure.effect-zoe:hover p.icon-links a:first-child {
     position: fixed;
     top : 0;
     left : 0;
+    height: 70px;
     
     
     padding: 20px;
@@ -2539,9 +2539,9 @@ figure.effect-zoe:hover p.icon-links a:first-child {
     
   }
 
-  nav{
+  /* nav{
     height: 70px;
-  }
+  } */
   /* @keyframes move {
     0%{
       top:0; left:0;
